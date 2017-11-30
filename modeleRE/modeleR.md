@@ -12,12 +12,12 @@
 ( <u>numTT</u> , prixParKm , _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _emailAdmin_ )
 
 **TRAJET**
-( <u>numT</u> , prixParKm , date_dep , date_ar , adr_rdv , adr_dep , _conducteur_ , _VehiculeImm_ ,  _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _numTrajetType_ )
+( <u>numT</u> , prixParKm , date_dep , date_ar , adr_rdv , adr_dep , _conducteur_ , _vehiculeImm_ ,  _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _numTrajetType_ )
 
 **ETAPES**
 ( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , _numTrajetLié_ )
 
-**PARTECIPER**
+**PARTICIPER**
 ( <u>_numT_</u> , <u>_numCovoitureur_</u> )
 
 **AVIS**

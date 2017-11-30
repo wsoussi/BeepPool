@@ -1,17 +1,17 @@
-#**LES REQUETTES À FAIRE**
+#**LES REQUÊTES À FAIRE**
 
-##LES REQUETTES POUR L'INVITE'
-- Chercher les trajets qui correspond aux villes de depart et d'arrivee et une date precis ou une date de marge -> mettre le marge (afficher les trajets qui ne sont pas complets)
-- s'inscrir sur le site et devenir membre (il ne peut pas s'ajouter comme admin)
+##LES REQUETTES POUR L'INVITÉ
+- Chercher les trajets qui correspondent aux villes de départ et d'arrivée et une date précise ou un interval -> mettre l'interval (afficher les trajets qui ne sont pas complets)
+- s'inscrire sur le site et devenir membre (il ne peut pas s'ajouter comme admin)
 
-##LES REQUETTES POUR L'ADMIN
-- Creer des villes pour qu'ils soient utilisees par les trajets
-- Creer des trajets types
+##LES REQUÊTES POUR L'ADMIN
+- Créer des villes pour qu'elles soient utilisées par les trajets
+- Créer des trajets types
 
-##LES REQUETTES POUR L'ABONNE
-- Proposer un trajet (avec possibilite' de le lier a un trajet type) et ajouter les informations qui manques en cas de creation de trajets complementaires ( creer par les villes etapes) (ne pas oublier les contraintes sur le prix avec une vue sur trajet)
+##LES REQUÊTES POUR L'ABONN2
+- Proposer un trajet (avec possibilité de le lier à un trajet type) et ajouter les informations qui manquent en cas de creation de trajets complementaires ( creer par les villes etapes) (ne pas oublier les contraintes sur le prix avec une vue sur trajet)
 - changer
-- Parteciper a un trajet
+- Participer a un trajet
 - Donner un avis sur un covoitureur pour un trajet specifique (faisant distinction sur le cas où le donneur d'avis est un passagers ou bien le conducteur)
 
 ##TRIGGERS D'ENVIRONNEMENT
