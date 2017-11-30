@@ -43,7 +43,7 @@ create table ville
 create table trajet_type
 (
     numTT INTEGER constraint trajet_type_PK primary key,
-    prixParKm DECIMAL(1,2) constraint trajet_type_prixNN not null,
+    prixParKm DECIMAL(3,2) constraint trajet_type_prixNN not null,
         -- je met le prix comme not null parce que
         -- dans notre vision c'est tout l'interet
         -- d'avoir la table trajet_type
@@ -53,3 +53,11 @@ create table trajet_type
     villeArrY DECIMAL constraint trajet_type_villeArrY_FK foreign key references ville(coordY),
     email admin VARCHAR(320) constraint trajet_type_admin_FK forein key references inscrit(email)
 );
+
+create table trajet
+  (
+    numT INTEGER constraint trajet_PK primary key,
+    prixParKm DECIMAL(3,2) constraint trajet_prixNN not null,
+    date_dep DATE constraint trajet_date_depNN check date_dep is not null and  date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= (CAST(CURRENT_TIMESTAMP AS DATE) + 182),
+    date_ar DATE constraint trajet_date_ar check date_ar > date_dep,
+  )
