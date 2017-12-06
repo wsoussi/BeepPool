@@ -17,15 +17,9 @@
 **ETAPES**
 ( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , _numTrajetLié_ )
 
-<<<<<<< HEAD
 **PARTECIPER**
 ( <u>_numT_</u> , <u>_emailCovoitureur_</u> )
-=======
-**PARTICIPER**
-( <u>_numT_</u> , <u>_EmailCovoitureur_</u> )
->>>>>>> ffeaa64c65beefccd68a6b7fc0735a2f57149102
+
 
 **AVIS**
 ( <u>_numT_<u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u> )
-
-*********************
