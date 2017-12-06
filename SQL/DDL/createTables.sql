@@ -51,7 +51,7 @@ create table trajet_type
     villeDepY DECIMAL constraint trajet_type_villeDepY_FK foreign key references ville(coordY),
     villeArrX DECIMAL constraint trajet_type_villeArrX_FK foreign key references ville(coordX),
     villeArrY DECIMAL constraint trajet_type_villeArrY_FK foreign key references ville(coordY),
-    email admin VARCHAR(320) constraint trajet_type_admin_FK forein key references inscrit(email)
+    email_admin VARCHAR(320) constraint trajet_type_admin_FK forein key references inscrit(email)
 );
 
 create table trajet
