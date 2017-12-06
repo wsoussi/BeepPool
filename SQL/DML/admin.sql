@@ -9,3 +9,6 @@ VALUES (43.2969500,5.3810700, "Marseille", "France", 13000, "Provence-Alpes-Côt
 -- Exemple de création de trajet type
 INSERT INTO trajet_type(prixParKm, villeDepX, villeDepY, villeArrX, villeArrY, email_admin)
 VALUES (0.1,43.6109200,3.8772300,  43.2969500, 5.3810700, "admin1@beeppool.fr");
+
+-- MODIFIER UN MEMBRE EN ADMIN
+UPDATE inscrit SET estAdmin = 1 WHERE email = "email@server.domain";

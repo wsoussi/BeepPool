@@ -1,14 +1,3 @@
-
-**LES REQUETES À FAIRE**
-
-##LES REQUETES POUR L'INVITÉ
-- Chercher les trajets qui correspond aux villes de depart et d'arrivee et une date precis ou une date de marge -> mettre le marge (afficher les trajets qui ne sont pas complets)
-- s'inscrir sur le site et devenir membre (il ne peut pas s'ajouter comme admin)
-
-##LES REQUETES POUR L'ADMIN
-- Creer des villes pour qu'ils soient utilisees par les trajets
-- Creer des trajets types
-
 **LES REQUÊTES À FAIRE**
 
 ##LES REQUETTES POUR L'INVITÉ
