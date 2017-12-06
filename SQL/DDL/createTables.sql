@@ -94,5 +94,8 @@ create table trajet
       numT constraint avis_numT_FK foreign key references trajet(numT),
       numDonneur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
       numReceveur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
-      constraint avis_PK primary key (numT, numDonneur, numReceveur)
+      constraint avis_PK primary key (numT, numDonneur, numReceveur),
+      nbEtoile INTEGER(1) constraint avis_nbEtoile check nbEtoile > 0 and nbEtoile<6 is not null,
+      commentaire VARCHAR(200)
+
     )

@@ -22,4 +22,4 @@
 
 
 **AVIS**
-( <u>_numT_<u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u> )
+( <u>_numT_</u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u>, nbEtoile, commentaire)
