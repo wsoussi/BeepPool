@@ -19,3 +19,7 @@ WHERE trajet.conducteur = inscrit.email AND
       ;
 
 -- S'inscrir sur le site et devenir membre
+INSERT INTO inscrit
+(email, nom, prenom, dateNaiss, adresse, codeP, pays, numTel, mdp, estAdmin)
+VALUES
+("nom.prenom@serveur.com", "nom", "prenom", "jj-mm-aaaa", "adresse", "codeP", "pays", "numTel", "mdp", false); --- il met pas lui estAdmin
