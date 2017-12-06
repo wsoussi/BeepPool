@@ -20,3 +20,5 @@
 <br>PS: R = 6372,795477598 Km (rayon quadratique moyen de la terre)
 - Donner un avis sur un covoitureur pour un trajet specifique (faisant distinction sur le cas où le donneur d'avis est un passagers ou bien le conducteur)
 - verifier que nbPlace de trajet soit < nbplace de la voiture
+
+ 
