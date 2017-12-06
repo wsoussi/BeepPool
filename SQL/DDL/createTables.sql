@@ -60,4 +60,37 @@ create table trajet
     prixParKm DECIMAL(3,2) constraint trajet_prixNN not null,
     date_dep DATE constraint trajet_date_depNN check date_dep is not null and  date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= (CAST(CURRENT_TIMESTAMP AS DATE) + 182),
     date_ar DATE constraint trajet_date_ar check date_ar > date_dep,
-  )
+    adr_rdv VARCHAR(70),
+    adr_ar VARCHAR(70),
+    conducteur VARCHAR(320) constraint trajet_conducteur_FK foreign key references inscrit(email),
+    vehiculeImm VARCHAR(8) constraint trajet_vehiculeImm_FK foreign key references voiture(immatriculation),
+    villeDepX DECIMAL constraint trajet_villeDepX_FK foreign key references ville(coordX),
+    villeDepY DECIMAL constraint trajet_villeDepY_FK foreign key references ville(coordY),
+    villeArrX DECIMAL constraint trajet_villeArrX_FK foreign key references ville(coordX),
+    villeArrY DECIMAL constraint trajet_villeArrY_FK foreign key references ville(coordY),
+    numTrajetType INTEGER constraint trajet_numTrajetType_FK foreign key references trajet_type(numTT)
+  );
+
+  create table etapes
+  (
+    numT constraint etapes_numT_FK foreign key references trajet(numT),
+    coordX constraint etapes_coordX_FK foreign key references ville(coordX),
+    coordY constraint etapes_coordY_FK foreign key references ville(coordY),
+    numTrajetLie constraint etapes_numT_FK foreign key references trajet(numT),
+    constraint etapes_PK primary key (numT, coordX, coordY)
+  );
+
+  create table participer
+  (
+    numT constraint participer_numT_FK foreign key references trajet(numT),
+    numCovoitureur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
+    constraint participer_PK primary key (numT, numCovoitureur)
+  );
+
+  create table avis
+    (
+      numT constraint avis_numT_FK foreign key references trajet(numT),
+      numDonneur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
+      numReceveur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
+      constraint avis_PK primary key (numT, numDonneur, numReceveur)
+    )

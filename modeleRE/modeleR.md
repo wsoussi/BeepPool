@@ -18,7 +18,7 @@
 ( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , _numTrajetLié_ )
 
 **PARTECIPER**
-( <u>_numT_</u> , <u>_numCovoitureur_</u> )
+( <u>_numT_</u> , <u>_emailCovoitureur_</u> )
 
 **AVIS**
 ( <u>_numT_<u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u> )
