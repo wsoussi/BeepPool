@@ -13,7 +13,8 @@ create table inscrit
     pays VARCHAR(50),
     numTel VARCHAR(13),
     mdp VARCHAR(26),
-    estAdmin BIT constraint inscrit_estAdmin DEFAULT 0
+    estAdmin BIT constraint inscrit_estAdmin DEFAULT 0,
+    estBloque BIT constraint inscrit_estBloque DEFAULT 0
 );
 
 create table voiture
