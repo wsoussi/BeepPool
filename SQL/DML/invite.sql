@@ -10,8 +10,8 @@ WHERE trajet.conducteur = inscrit.email AND
       vd.codePostale = "codePMont" AND
       va.nomV = "Marseille" AND
       va.codePoste = "codePMarse" AND
-      date_dep >= "date"-"margeEnJours" AND
-      date_dep <= "date"+"margeEnJours" AND
+      date_dep >= "date"-"toleranceEnJours" AND
+      date_dep <= "date"+"toleranceEnJours" AND
       nbPlace > (SELECT count(*)
                  FROM parteciper
                  WHERE parteciper.numT = trajet.numT
@@ -20,6 +20,6 @@ WHERE trajet.conducteur = inscrit.email AND
 
 -- S'inscrir sur le site et devenir membre
 INSERT INTO inscrit
-(email, nom, prenom, dateNaiss, adresse, codeP, pays, numTel, mdp, estAdmin)
+(email, nom, prenom, dateNaiss, adresse, codeP, pays, numTel, mdp)
 VALUES
-("nom.prenom@serveur.com", "nom", "prenom", "jj-mm-aaaa", "adresse", "codeP", "pays", "numTel", "mdp", false); --- il met pas lui estAdmin
+("nom.prenom@serveur.com", "nom", "prenom", "jj-mm-aaaa", "adresse", "codeP", "pays", "numTel", "mdp"); --- il met pas lui estAdmin
