@@ -13,7 +13,8 @@ create table inscrit
     pays VARCHAR(50),
     numTel VARCHAR(13),
     mdp VARCHAR(26),
-    estAdmin BIT constraint inscrit_estAdmin DEFAULT 0
+    estAdmin BIT constraint inscrit_estAdmin DEFAULT 0,
+    estBloque BIT constraint inscrit_estBloque DEFAULT 0
 );
 
 create table voiture
@@ -93,5 +94,8 @@ create table trajet
       numT constraint avis_numT_FK foreign key references trajet(numT),
       numDonneur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
       numReceveur constraint participer_numCovoitureur_FK foreign key references inscrit(email),
-      constraint avis_PK primary key (numT, numDonneur, numReceveur)
+      constraint avis_PK primary key (numT, numDonneur, numReceveur),
+      nbEtoile INTEGER(1) constraint avis_nbEtoile check nbEtoile > 0 and nbEtoile<6 is not null,
+      commentaire VARCHAR(200)
+
     )

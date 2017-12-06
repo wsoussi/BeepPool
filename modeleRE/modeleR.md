@@ -1,7 +1,7 @@
 #MODÈLE RELATIONEL DE LA BDD
 
 **INSCRIT**
-(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp, estAdmin )
+(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp, estAdmin, estBloque )
 
 **VOITURE** (<u>immatriculation</u> , marque , modele , annee , couleur , nbPlaces , _emailProprietaire_ )
 
@@ -22,4 +22,4 @@
 
 
 **AVIS**
-( <u>_numT_<u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u> )
+( <u>_numT_</u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u>, nbEtoile, commentaire)
