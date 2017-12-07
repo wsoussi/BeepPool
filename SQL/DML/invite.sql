@@ -6,12 +6,12 @@ WHERE trajet.conducteur = inscrit.email AND
       trajet.villeDepY = vd.coordY AND
       trajet.villeArrX = va.coordX AND
       trajet.villeArrY = va.coordY AND
-      vd.nomV = "Montpellier" AND
-      vd.codePostale = "codePMont" AND
-      va.nomV = "Marseille" AND
-      va.codePoste = "codePMarse" AND
-      date_dep >= "date"-"toleranceEnJours" AND
-      date_dep <= "date"+"toleranceEnJours" AND
+      vd.nomV = 'Montpellier' AND
+      vd.codePostale = 'codePMont' AND
+      va.nomV = 'Marseille' AND
+      va.codePoste = 'codePMarse' AND
+      date_dep >= 'date'-'toleranceEnJours' AND
+      date_dep <= 'date'+'toleranceEnJours' AND
       nbPlace > (SELECT count(*)
                  FROM parteciper
                  WHERE parteciper.numT = trajet.numT
@@ -22,4 +22,4 @@ WHERE trajet.conducteur = inscrit.email AND
 INSERT INTO inscrit
 (email, nom, prenom, dateNaiss, adresse, codeP, pays, numTel, mdp)
 VALUES
-("nom.prenom@serveur.com", "nom", "prenom", "jj-mm-aaaa", "adresse", "codeP", "pays", "numTel", "mdp"); --- il met pas lui estAdmin
+('nom.prenom@serveur.com', 'nom', 'prenom', 'jj-mm-aaaa', 'adresse', 'codeP', 'pays', 'numTel', 'mdp'); --- il met pas lui estAdmin
