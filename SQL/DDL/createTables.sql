@@ -11,7 +11,7 @@ create table inscrit
     codePostale VARCHAR(9),
         -- la longueur change de pays à pays (par example USA a 9 chiffres)
     pays VARCHAR(50),
-    numTel VARCHAR(13),
+    numTel VARCHAR(13)constraint inscrit_numTelNN not null,
     mdp VARCHAR(26),
     estAdmin BIT constraint inscrit_estAdmin DEFAULT 0,
     estBloque BIT constraint inscrit_estBloque DEFAULT 0
@@ -58,7 +58,7 @@ create table trajet_type
 create table trajet
   (
     numT INTEGER auto_increment constraint trajet_PK primary key,
-    prixParKm DECIMAL(3,2) constraint trajet_prixNN not null,
+    prix DECIMAL(4,2) constraint trajet_prixNN not null,
     date_dep DATE constraint trajet_date_depNN check date_dep is not null and  date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= (CAST(CURRENT_TIMESTAMP AS DATE) + 182),
     date_ar DATE constraint trajet_date_arNN check is not null and date_ar > date_dep,
     adr_rdv VARCHAR(70) check is not null,

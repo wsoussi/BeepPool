@@ -1,7 +1,7 @@
 #MODÈLE RELATIONEL DE LA BDD
 
 **INSCRIT**
-(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp, estAdmin, estBloque )
+(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp, estAdmin, estBloque, dateFinBlockage )
 
 **VOITURE** (<u>immatriculation</u> , marque , modele , annee , couleur , nbPlaces , _emailProprietaire_ )
 
@@ -12,7 +12,7 @@
 ( <u>numTT</u> , prixParKm , _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _emailAdmin_ )
 
 **TRAJET**
-( <u>numT</u> , prixParKm , date_dep , date_ar , adr_rdv , adr_dep , nbPlace , _conducteur_ , _vehiculeImm_ ,  _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _numTrajetType_ )
+( <u>numT</u> , prix , date_dep , date_ar , adr_rdv , adr_dep , nbPlace , _conducteur_ , _vehiculeImm_ ,  _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _numTrajetType_ )
 
 **ETAPES**
 ( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , _numTrajetLié_ )
