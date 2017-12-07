@@ -1,4 +1,4 @@
-#MODÈLE RELATIONEL DE LA BDD
+#MODÈLE RELATIONNEL DE LA BDD
 
 **INSCRIT**
 (<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp, estAdmin, estBloque, dateFinBlockage )
