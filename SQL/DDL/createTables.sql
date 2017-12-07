@@ -14,7 +14,7 @@ create table inscrit
     numTel VARCHAR(13)constraint inscrit_numTelNN not null,
     mdp VARCHAR(26),
     estAdmin BIT constraint inscrit_estAdmin DEFAULT 0,
-    estBloque BIT constraint inscrit_estBloque DEFAULT 0
+    dateFinBlockage DATE
 );
 
 create table voiture
@@ -22,11 +22,11 @@ create table voiture
   immatriculation VARCHAR(8) constraint voiture_pk primary key,
       -- une immatriculation a une longueur variable par rapport au pays et date d'immatriculation
   marque VARCHAR(35) constraint voiture_marqueNN not null,
-  modele VARCHAR(35) constraint voiture_modeleNN not null,,
-  annee INTEGER constraint voiture_anneeConstr check annee >= 1883 and annee <= year(CAST(CURRENT_TIMESTAMP AS DATE));
+  modele VARCHAR(35) constraint voiture_modeleNN not null,
+  annee INTEGER constraint voiture_anneeConstr check annee >= 1883 and annee <= year(CAST(CURRENT_TIMESTAMP AS DATE)),
       -- invention de l'automobile: 1883
   couleur VARCHAR(15),
-  nbPlaces INTEGER constraint voiture_nbPlacesCheck nbPlaces is not null and nbPlaces <= 9,
+  nbPlaces INTEGER constraint voiture_nbPlacesCheck check nbPlaces is not null and nbPlaces <= 9,
   emailProprietaire VARCHAR(320) constraint voiture_emailProprietaireNN not null,
   constraint voiture_FK foreign key (emailProprietaire) references inscrit(email)
 );
@@ -60,16 +60,16 @@ create table trajet
     numT INTEGER auto_increment constraint trajet_PK primary key,
     prix DECIMAL(4,2) constraint trajet_prixNN not null,
     date_dep DATE constraint trajet_date_depNN check date_dep is not null and  date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= (CAST(CURRENT_TIMESTAMP AS DATE) + 182),
-    date_ar DATE constraint trajet_date_arNN check is not null and date_ar > date_dep,
+    date_ar DATE constraint trajet_date_arNN not null and date_ar > date_dep,
     adr_rdv VARCHAR(70) check is not null,
     adr_ar VARCHAR(70) check is not null,
-    conducteur VARCHAR(320) constraint trajet_conducteur_FK foreign key references inscrit(email),
-    vehiculeImm VARCHAR(8) constraint trajet_vehiculeImm_FK foreign key references voiture(immatriculation),
-    nbPlace INTEGER(50) constraint trajet_nbPlace check is not null and nbPlace > 0,
-    villeDepX DECIMAL constraint trajet_villeDepX_FK foreign key references ville(coordX),
-    villeDepY DECIMAL constraint trajet_villeDepY_FK foreign key references ville(coordY),
-    villeArrX DECIMAL constraint trajet_villeArrX_FK foreign key references ville(coordX),
-    villeArrY DECIMAL constraint trajet_villeArrY_FK foreign key references ville(coordY),
+    conducteur VARCHAR(320) constraint trajet_conducteur_FK not null and foreign key references inscrit(email),
+    vehiculeImm VARCHAR(8) constraint trajet_vehiculeImm_FK not null and foreign key references voiture(immatriculation),
+    nbPlace INTEGER(50) constraint trajet_nbPlace not null and nbPlace > 0,
+    villeDepX DECIMAL constraint trajet_villeDepX_FK not null foreign key references ville(coordX),
+    villeDepY DECIMAL constraint trajet_villeDepY_FK not null foreign key references ville(coordY),
+    villeArrX DECIMAL constraint trajet_villeArrX_FK not null foreign key references ville(coordX),
+    villeArrY DECIMAL constraint trajet_villeArrY_FK not null foreign key references ville(coordY),
     numTrajetType INTEGER constraint trajet_numTrajetType_FK foreign key references trajet_type(numTT)
   );
 
