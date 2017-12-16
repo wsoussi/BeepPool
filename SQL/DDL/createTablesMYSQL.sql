@@ -25,9 +25,9 @@ create table voiture
       -- une immatriculation a une longueur variable par rapport au pays et date d'immatriculation
   marque VARCHAR(35) not null,
   modele VARCHAR(35) not null,
-  annee INTEGER  CHECK annee >= 1883 and annee <= year(CAST(CURRENT_TIMESTAMP AS DATE)),
+  annee INTEGER  CHECK (annee >= 1883 and annee <= year(CAST(CURRENT_TIMESTAMP AS DATE))),
   couleur VARCHAR(15),
-  nbPlaces INTEGER not null CHECK nbPlaces >0 AND nbPlaces <=9,
+  nbPlaces INTEGER not null CHECK (nbPlaces >0 AND nbPlaces <=9),
   emailProprietaire VARCHAR(200) not null,
   primary key voiture_pk (immatriculation),
   foreign key voiture_FK (emailProprietaire) references inscrit(email) on update cascade on delete cascade
@@ -65,13 +65,13 @@ create table trajet
   (
     numT INTEGER auto_increment,
     prix DECIMAL(4,2) not null,
-    date_dep DATE not null CHECK date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= (CAST(CURRENT_TIMESTAMP AS DATE) + 182),
-    date_ar DATE not null CHECK date_ar >= date_dep,
+    date_dep DATE not null CHECK (date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)),
+    date_ar DATE not null CHECK (date_ar >= date_dep),
     adr_rdv VARCHAR(70) not null,
     adr_ar VARCHAR(70) not null,
     conducteur VARCHAR(200) not null,
     vehiculeImm VARCHAR(8) not null,
-    nbPlaceDispo INTEGER(50) not null CHECK nbPlaceDispo > 0 and nbPlaceDispo < (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation),
+    nbPlaceDispo INTEGER(50) not null CHECK (nbPlaceDispo > 0 and nbPlaceDispo < (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)),
     villeDepX DECIMAL not null,
     villeDepY DECIMAL not null,
     villeArrX DECIMAL not null,
@@ -111,7 +111,7 @@ create table avis
     numT INTEGER,
     numDonneur VARCHAR(200),
     numReceveur VARCHAR(200),
-    nbEtoile INTEGER(1) not null CHECK nbEtoile > 0 and nbEtoile<6,
+    nbEtoile INTEGER(1) not null CHECK (nbEtoile > 0 and nbEtoile<6),
     commentaire VARCHAR(200),
     primary key avis_PK (numT, numDonneur, numReceveur),
     foreign key participer_numDonneur_FK (numDonneur) references inscrit(email),
@@ -120,3 +120,40 @@ create table avis
   );
 
 -- LES CHECKS NE MARCHES PAS EN MYSQL DONC ON A ECRIT LES TRIGGERS CORRESPONDANT
+
+CREATE TRIGGER VERIF_INSCRIT BEFORE INSERT ON inscrit
+FOR EACH ROW
+BEGIN
+   IF (NEW.dateNaiss >= CURDATE() OR NEW.dateNaiss <= DATE_SUB(CURDATE(), INTERVAL 100 YEAR)) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour dateNaiss de inscrit';
+
+   ELSEIF (NEW.rang > 5 OR NEW.rang < 0) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour rang de inscrit';
+   END IF;
+END//
+
+CREATE TRIGGER VERIF_VOITURE BEFORE INSERT ON voiture
+FOR EACH ROW
+BEGIN
+   IF (NEW.annee < 1883 OR NEW.annee > year(CAST(CURRENT_TIMESTAMP AS DATE))) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour annee de voiture';
+   END IF;
+END//
+
+CREATE TRIGGER VERIF_TRAJET BEFORE INSERT ON trajet
+FOR EACH ROW
+BEGIN
+   IF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
+   ELSEIF (NEW.date_ar < NEW.date_dep) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
+   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
+   END IF;
+END//
