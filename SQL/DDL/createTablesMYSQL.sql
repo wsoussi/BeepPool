@@ -6,8 +6,8 @@ create table inscrit
         -- 255 characters for the domain name.
     nom VARCHAR(30) not null,
     prenom VARCHAR(30) not null,
-    dateNaiss DATE not null CHECK dateNaiss < CAST(CURRENT_TIMESTAMP AS DATE) and dateNaiss > (CAST(CURRENT_TIMESTAMP AS DATE) - (120*365)),
-    rang NUMERIC(2,1) CHECK rang <= 5 AND rang >= 0,
+    dateNaiss DATE not null CHECK (dateNaiss < CURDATE() and dateNaiss > DATE_SUB(CURDATE(), INTERVAL 120 YEAR)),
+    rang NUMERIC(2,1) CHECK (rang <= 5 AND rang >= 0),
     adresse VARCHAR(70),
     codePostale VARCHAR(9),
         -- la longueur change de pays à pays (par example USA a 9 chiffres)
@@ -90,7 +90,8 @@ create table etapes
   numT INTEGER,
   coordX DECIMAL,
   coordY DECIMAL,
-  numTrajetLie  INTEGER,
+  nbPerRec INT DEFAULT 0,
+  nbPerDes INT DEFAULT 0,
     constraint etapes_PK primary key (numT, coordX, coordY),
     foreign key etapes_numT_FK (numT) references trajet(numT),
     foreign key etapes_coord_FK (coordX,coordY) references ville(coordX,coordY)
