@@ -49,19 +49,21 @@ END;
 /
 
 -- Laisser un avis, vérifie s'il est conducteur ou covoitueur
-CREATE OR REPLACE PROCEDURE estConducteur
-(var_email IN VARCHAR(200), var_num_trajet IN INTEGER)
-RETURN BOOLEAN IS
-var_resultat BOOLEAN = false;
-email_conducteur IS
-    SELECT conducteur FROM trajet, inscrit, participer
-    WHERE trajet.numT = participer.numT AND  inscrit.email = trajet.conducteur
-    AND trajet.numT = var_num_trajet
-    AND participer.numCovoitureur = var_email;
+CREATE PROCEDURE estConducteur
+(IN var_email VARCHAR(200), IN var_num_trajet INTEGER, OUT var_resultat TINYINT(1) UNSIGNED )
 BEGIN
-    IF email_conducteur = var_email THEN
-        var_resultat = true;
-    END IF;
-    RETURN var_resultat;
-END;
-/
+
+DECLARE email_conducteur VARCHAR(200);
+SELECT conducteur INTO email_conducteur
+FROM trajet, inscrit, participer
+WHERE trajet.numT = participer.numT AND  inscrit.email = trajet.conducteur
+AND trajet.numT = var_num_trajet
+AND participer.numCovoitureur = var_email;
+
+IF email_conducteur = var_email THEN
+    SET var_resultat = true;
+ELSE
+    SET var_resultat = false;
+END IF;
+
+END//
