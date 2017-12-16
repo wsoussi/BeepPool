@@ -1,6 +1,6 @@
 -- Si l'inscrit est blocke' RENVOYER VRAI
 CREATE OR REPLACE PROCEDURE isBlocked
-(var_email IN VARCHAR(320))
+(var_email IN VARCHAR(200))
 RETURN BOOLEAN IS
 var_resultat BOOLEAN = false;
 CURSOR C_bloques IS
