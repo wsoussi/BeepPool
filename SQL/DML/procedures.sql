@@ -64,3 +64,42 @@ ELSE
 END IF;
 
 END//
+
+-- A GARDER SI BESOIN
+-- Procédure pour savoir si un trajet fait parti d'un trajet type
+--CREATE PROCEDURE estTrajetType
+--(IN depX DECIMAL,IN depY DECIMAL, IN arrX, IN arrY, OUT resultat TINYINT(1) UNSIGNED )
+--BEGIN
+
+--DECLARE nbD INT;
+--DECLARE nbA INT;
+
+--SELECT count(*) INTO nbD FROM trajet_type
+--WHERE (villeDepX = depX OR villeArrX = depX)
+--AND (villeDepY = depY OR villeArrY = depY);
+
+--SELECT count(*) INTO nbA FROM trajet_type
+--WHERE (villeDepX = arrX OR villeArrX = arrX)
+--AND (villeDepY = arrY OR villeArrY = arrY);
+
+--IF nbD >= 1 AND nbA >= 1 THEN
+    --SET resultat = true;
+--ELSE
+    --SET resultat = false;
+--END IF;
+
+--END//
+
+
+-- Procédure pour calculer la distance entre deux ville
+CREATE PROCEDURE calcul_distance
+(IN depX DECIMAL,IN depY DECIMAL, IN arrX, IN arrY, OUT resultat DECIMAL(6,2))
+BEGIN
+DECLARE R DECIMAL;
+
+SET R = 6372,795477598;
+
+SET resultat = R * ACOS( SIN(depY) * SIN(arrY) +
+COS(depY) * COS(arrY) * COS(depX - arrX));
+
+END//

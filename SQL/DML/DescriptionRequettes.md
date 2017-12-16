@@ -19,5 +19,10 @@
 - Calculer la distance entre deux ville a chaque creation de trajet ou trajet type. FORMULE:
 <br> DISTANCE (A,B) = R * arccos(sin(latA) * sin(latB) + cos(latA) * cos(latB) * cos(lonA-lonB))
 <br>PS: R = 6372,795477598 Km (rayon quadratique moyen de la terre)
+- On fixe X = longitude et Y = latitude
 - Donner un avis sur un covoitureur pour un trajet specifique (faisant distinction sur le cas où le donneur d'avis est un passagers ou bien le conducteur)
+<<<<<<< HEAD
 + verifier que nbPlace de trajet soit < nbplace de la voiture
+=======
+- verifier que nbPlace de trajet soit < nbplace de la voiture
+>>>>>>> 377b45776ddd9318c42b3a16b71d5df966feb4a4
