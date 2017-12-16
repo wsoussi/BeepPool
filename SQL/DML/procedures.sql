@@ -26,18 +26,16 @@ END IF;
 END//
 
 
--- Ajouter trajet
-DECLARE
-
+-- Ajouter trajet si il est inscrit et pas blocke'
 BEGIN
+DECLARE
   IF NOT isBlocked('email') THEN
       INSERT INTO trajet VALUES (prix, date_dep , date_ar , adr_rdv , adr_dep , nbPlace , conducteur , vehiculeImm , villeDepX , villeDepY , villeArrX , villeArrY, numTrajetType )
                                 ('prix', 'date_dep' , 'date_ar' , 'adr_rdv' , 'adr_dep' , 'nbPlace' , 'conducteur' , 'vehiculeImm' , 'villeDepX' , 'villeDepY' , 'villeArrX' , 'villeArrY', 'numTrajetType')
   END IF
-END;
-/
+END//
 
--- Si l'inscrit est le meme que conducteur et n'est pas blocke' on changer le traje
+-- Changer le trajet si il est inscrit et pas blocke'
 
 DECLARE
 
@@ -45,8 +43,7 @@ BEGIN
   IF NOT isBlocked('email') THEN
       UPDATE trajet SET .... WHERE conducteur = 'email' and numT= 'numTCible';
   END IF
-END;
-/
+END//
 
 -- Laisser un avis, vérifie s'il est conducteur ou covoitueur
 CREATE PROCEDURE estConducteur
