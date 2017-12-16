@@ -1,22 +1,32 @@
 -- Si l'inscrit est blocke' RENVOYER VRAI
-CREATE OR REPLACE PROCEDURE isBlocked
-(var_email IN VARCHAR(200))
-RETURN BOOLEAN IS
-var_resultat BOOLEAN = false;
-CURSOR C_bloques IS
-  SELECT email
-  FROM inscrit
-  WHERE dateFinBlockage > getdate();
+CREATE PROCEDURE isBlocked (IN varEmail VARCHAR(200), OUT resultat TINYINT(1) UNSIGNED)
 BEGIN
-  FOR mail IN C_bloques LOOP
-    IF var_email = mail THEN
-      var_resultat = true;
-    END IF;
-  END LOOP;
-  RETURN var_resultat;
-END;
-/
+DECLARE nb_email INT;
+DECLARE dateB DATE;
 
+SELECT count(*) INTO nb_email
+FROM inscrit
+WHERE email = varEmail;
+
+IF (nb_email = 1) THEN
+  SELECT dateFinBlockage INTO dateB
+  FROM inscrit
+  WHERE email = varEmail;
+
+  IF (dateB > CURDATE()) THEN
+      SET resultat = TRUE;
+  ELSE
+      SET resultat = FALSE;
+  END IF;
+
+ELSE
+    SET resultat = TRUE;
+END IF;
+
+END//
+
+
+-- Ajouter trajet
 DECLARE
 
 BEGIN
