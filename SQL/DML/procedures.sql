@@ -1,4 +1,4 @@
--- Si l'inscrit n'est pas blocke' on ajoute le trajet
+-- Si l'inscrit est blocke' RENVOYER VRAI
 CREATE OR REPLACE PROCEDURE isBlocked
 (var_email IN VARCHAR(320))
 RETURN BOOLEAN IS
