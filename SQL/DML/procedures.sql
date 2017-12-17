@@ -107,6 +107,10 @@ END//
 -- Procédure calcul temps moyen d'un trajet
 CREATE PROCEDURE calcul_temps_par_trajet
 (IN distance DECIMAL,OUT resultat DECIMAL)
+DECLARE tmp DECIMAL;
+DECLARE nbH DECIMAL;
 BEGIN
-    SET resultat = ( distance / 90 );
+    SET tmp = ( distance / (90/60));
+    SET nbH = tmp%60;
+    SET resultat = nbH + (tmp - 60*nbH);
 END//
