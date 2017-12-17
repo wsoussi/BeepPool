@@ -1,9 +1,9 @@
 -- modification d'un membre en admin
 CREATE PROCEDURE Promotion_Membre
-(IN adminMail VARCHAR(200), IN emailPromotionReceiver VARCHAR(200))
+(IN adminMail VARCHAR(200), IN motDePass VARCHAR(26), IN emailPromotionReceiver VARCHAR(200))
 BEGIN
 DECLARE Admin BOOLEAN;
-SELECT count(*) INTO Admin FROM inscrit WHERE adminMail = email AND estAdmin = true;
+SELECT count(*) INTO Admin FROM inscrit WHERE adminMail = email AND motDePass = mdp AND estAdmin = true;
 IF (Admin) THEN
     UPDATE inscrit SET estAdmin = 1 WHERE email = emailPromotionReceiver;
 END IF;
@@ -11,10 +11,10 @@ END//
 
 -- Blockage/Deblockage d'un inscrit avec une date de fin blockage
 CREATE PROCEDURE Blockage_Membre
-(IN adminMail VARCHAR(200), IN emailBloque VARCHAR(200), dateFinBlockageP DATE)
+(IN adminMail VARCHAR(200),IN motDePass VARCHAR(26), IN emailBloque VARCHAR(200), dateFinBlockageP DATE)
 BEGIN
 DECLARE Admin BOOLEAN;
-SELECT count(*) INTO Admin FROM inscrit WHERE adminMail = email AND estAdmin = true;
+SELECT count(*) INTO Admin FROM inscrit WHERE adminMail = email AND motDePass = mdp AND estAdmin = true;
 IF (Admin) THEN
     UPDATE inscrit SET dateFinBlockage = dateFinBlockageP WHERE email = emailBloque;
 END IF;

@@ -17,6 +17,15 @@ VALUES
 ('wissem.soussi@etu.umontpellier.fr', 'Soussi', 'Wissem', '1996-01-16', '0033634897610', 'wissem', true);
 
 --creer des membres non admin
-insert into inscrit (email, nom, prenom, dateNaiss, numTel, mdp,estAdmin)
+insert into inscrit (email, nom, prenom, dateNaiss, numTel, mdp)
 VALUES
-('lazar.angelov@dope.fr', 'Lazar', 'Angelov', '1996-01-16', '0033634897610', 'lazar', false);
+('lazar.angelov@dope.fr', 'Lazar', 'Angelov', '1996-01-16', '0033634897610', 'lazar');
+
+insert into inscrit (email, nom, prenom, dateNaiss, numTel, mdp)
+VALUES
+('jeremie.daughter@montp.fr', 'daughter', 'Jeremie', '1997-01-01', '003321349078', 'jeremie');
+
+
+-- REQUETTES ADMIN
+-- wissem rend jeremie un admin
+CALL Promotion_Membre('wissem.soussi@etu.umontpellier.fr','wissem','jeremie.daughter@montp.fr');
