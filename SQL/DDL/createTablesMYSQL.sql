@@ -163,33 +163,3 @@ BEGIN
            SET MESSAGE_TEXT = 'Valeur invalide pour annee de voiture';
    END IF;
 END//
-
-
-CREATE TRIGGER VERIF_TRAJET BEFORE INSERT ON trajet
-FOR EACH ROW
-BEGIN
-   IF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
-   ELSEIF (NEW.date_ar < NEW.date_dep) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
-   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
-   END IF;
-END//
-CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
-FOR EACH ROW
-BEGIN
-   IF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
-   ELSEIF (NEW.date_ar < NEW.date_dep) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
-   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
-          SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
-   END IF;
-END//

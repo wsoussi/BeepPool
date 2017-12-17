@@ -10,8 +10,8 @@
 + Créer des villes pour qu'elles soient utilisées par les trajets
 
 ##LES REQUÊTES POUR L'ABONNÉ
-- Proposer un trajet (s'il est pas blocke')(trigger: possibilité de le lier à un trajet type) (trigger contraintes sur le prix avec une vue sur trajet)
-- changer un trajet (s'il est pas blocke')
++ Proposer un trajet (s'il est pas blocke' et si le conducteur aussi il est pas blocke')(trigger: possibilité de le lier à un trajet type) (trigger contraintes sur le prix avec une vue sur trajet)
++ changer un trajet (s'il est pas blocke' et si le conducteur aussi il est pas blocke')(trigger: possibilité de le lier à un trajet type)
 + Participer a un trajet (trigger: ne pas parteciper s'il est blocke' ou si il n'y a plus de place)(trigger: le conducteur ne peut pas parteciper au trajet de lui meme)
 - Donner un avis sur un covoitureur pour un trajet specifique (faisant distinction sur le cas où le donneur d'avis est un passagers ou bien le conducteur)
 

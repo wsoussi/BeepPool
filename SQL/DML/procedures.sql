@@ -61,7 +61,7 @@ END//
 
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
 CREATE PROCEDURE estTrajetType
-(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat TINYINT(1) UNSIGNED )
+(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat INTEGER UNSIGNED )
 BEGIN
 
 DECLARE nbD INT;
@@ -80,6 +80,21 @@ IF nbD >= 1 AND nbA >= 1 THEN
 ELSE
     SET resultat = false;
 END IF;
+
+END//
+
+-- Procédure pour savoir si un trajet fait parti d'un trajet type
+CREATE PROCEDURE trajetType
+(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat INTEGER)
+BEGIN
+
+DECLARE numTTR INTEGER DEFAULT -1;
+
+SELECT numTT INTO numTTR FROM trajet_type
+WHERE (villeDepX = depX AND villeDepY = depY)
+AND (villeArrX = arrX AND villeArrY = arrY);
+
+SET resultat = numTTR;
 
 END//
 
