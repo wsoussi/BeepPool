@@ -2,9 +2,9 @@
 CREATE PROCEDURE Promotion_Membre
 (IN adminMail VARCHAR(200), IN motDePass VARCHAR(26), IN emailPromotionReceiver VARCHAR(200))
 BEGIN
-DECLARE Admin BOOLEAN;
+DECLARE Admin TINYINT DEFAULT 0;
 SELECT count(*) INTO Admin FROM inscrit WHERE adminMail = email AND motDePass = mdp AND estAdmin = true;
-IF (Admin) THEN
+IF (Admin = 1) THEN
     UPDATE inscrit SET estAdmin = 1 WHERE email = emailPromotionReceiver;
 END IF;
 END//

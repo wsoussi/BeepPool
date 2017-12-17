@@ -88,6 +88,10 @@ FOR EACH ROW
 BEGIN
 DECLARE conducteurNbVoitures TINYINT;
 DECLARE voitureALui BOOLEAN;
+IF (isBlocked(NEW.conducteur)) THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
+END IF;
 SELECT count(*) INTO conducteurNbVoitures FROM voiture WHERE NEW.conducteur = emailProprietaire;
 SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailProprietaire AND NEW.vehiculeImm = immatriculation;
    IF (conducteurNbVoitures = 0) THEN
@@ -114,6 +118,10 @@ FOR EACH ROW
 BEGIN
 DECLARE conducteurNbVoitures TINYINT;
 DECLARE voitureALui BOOLEAN;
+IF (isBlocked(NEW.conducteur)) THEN
+  SIGNAL SQLSTATE '45000'
+  SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
+END IF;
 SELECT count(*) INTO conducteurNbVoitures FROM voiture WHERE NEW.conducteur = emailProprietaire;
 SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailProprietaire AND NEW.vehiculeImm = immatriculation;
    IF (conducteurNbVoitures = 0) THEN
