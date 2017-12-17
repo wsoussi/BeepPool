@@ -111,3 +111,10 @@ SET resultat = R * ACOS( SIN(depY) * SIN(arrY) +
 COS(depY) * COS(arrY) * COS(depX - arrX));
 
 END//
+
+-- Procédure calcul prix au kilomètre
+CREATE PROCEDURE calcul_prix_par_km
+(IN distance DECIMAL, IN prix DECIMAL, OUT resultat DECIMAL)
+BEGIN
+    SET resultat = ( prix/distance );
+END//
