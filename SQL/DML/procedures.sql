@@ -82,10 +82,13 @@ COS(latA) * COS(latB) * COS(lonA - lonB));
 END//
 
 -- Procédure calcul prix au kilomètre
-CREATE PROCEDURE calcul_prix_par_km
-(IN distance DECIMAL(6,2), IN prix DECIMAL(5,2), OUT resultat DECIMAL(3,2))
+CREATE FUNCTION calcul_prix_par_km
+(distance DECIMAL(6,2), prix DECIMAL(5,2))
+RETURNS DECIMAL(3,2)
 BEGIN
+DECLARE resultat DECIMAL(3,2);
     SET resultat = ( prix/distance );
+RETURN resultat;
 END//
 
 -- Procédure calcul temps moyen d'un trajet

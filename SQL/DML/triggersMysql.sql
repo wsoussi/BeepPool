@@ -113,14 +113,17 @@ SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailPropri
          SET NEW.numTrajetType = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
    END IF;
 END//
+
 CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
 FOR EACH ROW
 BEGIN
 DECLARE conducteurNbVoitures TINYINT;
 DECLARE voitureALui BOOLEAN;
-DECLARE distance DECIMAL(6,2) = calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.arrX, NEW.arrY);
-DECLARE trajet_Type INTEGER = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
+DECLARE distance DECIMAL(6,2);
+DECLARE trajet_Type INTEGER;
 DECLARE prix_TT DECIMAL(6,2);
+CALL trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,trajet_Type);
+CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
   SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
@@ -154,11 +157,11 @@ END IF;
          IF (calcul_prix_par_km(distance,NEW.prix) > prix_TT) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix trop élevé.';
-        ELSEIF
-            SET NEW.numTrajetType = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
+        ELSE
+            SET NEW.numTrajetType = trajetType;
         END IF;
    ELSEIF (trajet_Type = -1) THEN
-        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 )
+        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 ) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix par km trop élevé, le prix par km doit être <= à 0.10€.';
         END IF;
