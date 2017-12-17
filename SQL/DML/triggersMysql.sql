@@ -113,17 +113,14 @@ SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailPropri
          SET NEW.numTrajetType = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
    END IF;
 END//
-
 CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
 FOR EACH ROW
 BEGIN
 DECLARE conducteurNbVoitures TINYINT;
 DECLARE voitureALui BOOLEAN;
-DECLARE distance DECIMAL(6,2);
-DECLARE trajet_Type INTEGER;
+DECLARE distance DECIMAL(6,2) = calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.arrX, NEW.arrY);
+DECLARE trajet_Type INTEGER = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
 DECLARE prix_TT DECIMAL(6,2);
-CALL trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,trajet_Type);
-CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
   SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
@@ -157,13 +154,57 @@ END IF;
          IF (calcul_prix_par_km(distance,NEW.prix) > prix_TT) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix trop élevé.';
-        ELSE
-            SET NEW.numTrajetType = trajetType;
+        ELSEIF
+            SET NEW.numTrajetType = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
         END IF;
    ELSEIF (trajet_Type = -1) THEN
-        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 ) THEN
+        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 )
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix par km trop élevé, le prix par km doit être <= à 0.10€.';
         END IF;
    END IF;
+END//
+
+
+-- triggers sur l'ajout des avis --
+
+CREATE TRIGGER VERIF_AVIS_INSERT BEFORE INSERT ON avis
+FOR EACH ROW
+BEGIN
+DECLARE estConducteur TINYINT(1) UNSIGNED = estConducteur(NEW.numDonneur, NEW.numT);
+DECLARE numConducteur INTEGER;
+
+IF (conducteur = true) THEN
+    SELECT numT INTO numConducteur FROM trajet, avis
+    WHERE trajet.numT = NEW.numT;
+END IF;
+
+IF (NEW.numDonneur = NEW.numReceveur) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
+ELSEIF (estConducteur = false AND numReceveur <>  numConducteur) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
+END IF;
+END//
+
+
+CREATE TRIGGER VERIF_AVIS_UPDATE BEFORE UPDATE ON avis
+FOR EACH ROW
+BEGIN
+DECLARE estConducteur TINYINT(1) UNSIGNED = estConducteur(NEW.numDonneur, NEW.numT);
+DECLARE numConducteur INTEGER;
+
+IF (conducteur = true) THEN
+    SELECT numT INTO numConducteur FROM trajet, avis
+    WHERE trajet.numT = NEW.numT;
+END IF;
+
+IF (NEW.numDonneur = NEW.numReceveur) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
+ELSEIF (estConducteur = false AND numReceveur <>  numConducteur) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
+END IF;
 END//
