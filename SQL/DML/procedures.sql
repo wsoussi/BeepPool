@@ -89,12 +89,17 @@ CREATE PROCEDURE calcul_distance
 (IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat DECIMAL(6,2))
 BEGIN
 DECLARE R DECIMAL(13,9);
-
+DECLARE latA DECIMAL(13,9);
+DECLARE latB DECIMAL(13,9);
+DECLARE lonA DECIMAL(13,9);
+DECLARE lonB DECIMAL(13,9);
 SET R = 6372.795477598;
-
-SET resultat = R * ACOS( SIN(depY) * SIN(arrY) +
-COS(depY) * COS(arrY) * COS(depX - arrX));
-
+SET latA = depY/180*PI();
+SET latB = arrY/180*PI();
+SET lonA = depX/180*PI();
+SET lonB = arrX/180*PI();
+SET resultat = R * ACOS( SIN(latA) * SIN(latB) +
+COS(latA) * COS(latB) * COS(lonA - lonB));
 END//
 
 -- Procédure calcul prix au kilomètre
@@ -108,5 +113,9 @@ END//
 CREATE PROCEDURE calcul_temps_par_trajet
 (IN distance DECIMAL(6,2),OUT resultat TIME)
 BEGIN
-    SET resultat = distance/90;
+DECLARE hours INTEGER;
+DECLARE minutes INTEGER;
+SET hours = TRUNCATE(distance/90,0);
+SET minutes = (distance/90*100 - hours*100)/10*6;
+    SET resultat = hours*10000 + minutes*100;
 END//
