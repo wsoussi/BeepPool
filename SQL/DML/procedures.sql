@@ -99,14 +99,14 @@ END//
 
 -- Procédure calcul prix au kilomètre
 CREATE PROCEDURE calcul_prix_par_km
-(IN distance DECIMAL, IN prix DECIMAL, OUT resultat DECIMAL)
+(IN distance DECIMAL, IN prix DECIMAL, OUT resultat DECIMAL(3,2))
 BEGIN
     SET resultat = ( prix/distance );
 END//
 
 -- Procédure calcul temps moyen d'un trajet
 CREATE PROCEDURE calcul_temps_par_trajet
-(IN distance DECIMAL,OUT resultat DECIMAL)
+(IN distance DECIMAL,OUT resultat DECIMAL(4,2))
 DECLARE tmp DECIMAL;
 DECLARE nbH DECIMAL;
 BEGIN
