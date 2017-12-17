@@ -28,4 +28,4 @@ VALUES
 
 -- REQUETTES ADMIN
 -- wissem rend jeremie un admin
-CALL Promotion_Membre('wissem.soussi@etu.umontpellier.fr','wissem','jeremie.daughter@montp.fr');
+CALL Promotion_Membre('wissem.soussi@etu.umontpellier.fr','wisem','jeremie.daughter@montp.fr');

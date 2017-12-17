@@ -25,21 +25,6 @@ END IF;
 
 END//
 
--- Ajouter trajet si il est inscrit et pas blocke' (complete' en PHP)
-BEGIN
-  IF (NOT isBlocked('email')) THEN
-      INSERT INTO trajet VALUES (prix, date_dep , date_ar , adr_rdv , adr_dep , nbPlace , conducteur , vehiculeImm , villeDepX , villeDepY , villeArrX , villeArrY, numTrajetType )
-                                ('prix', 'date_dep' , 'date_ar' , 'adr_rdv' , 'adr_dep' , 'nbPlace' , 'conducteur' , 'vehiculeImm' , 'villeDepX' , 'villeDepY' , 'villeArrX' , 'villeArrY', 'numTrajetType')
-  END IF
-END//
-
--- Changer le trajet si il est inscrit et pas blocke' (complete' en PHP)
-BEGIN
-  IF (NOT isBlocked('email')) THEN
-      UPDATE trajet SET .... WHERE conducteur = 'email' and numT= 'numTCible';
-  END IF
-END//
-
 --vérifie s'il est conducteur ou covoitureur
 CREATE PROCEDURE estConducteur
 (IN var_email VARCHAR(200), IN var_num_trajet INTEGER, OUT var_resultat TINYINT(1) UNSIGNED )

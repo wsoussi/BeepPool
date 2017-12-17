@@ -25,10 +25,8 @@
 
 ##POUR JEREMIE LE MATIN
 Tu fait jusqu'ou tu arrive à faire :)
-- La procedure que tu a ecrit sur savoir si un trajet fait parti d'un trajet type marche! Maintenant faudra faire un trigger presque identique qui se declanche à l'ajout d'un trajet et qui rempli l'attribut numTrajetType automatiquement si le trajetType existe.
 - A chaque ajout de trajet si celui-ci a un trajet-type verifier qu'il depasse pas prixParKm sinon verifier que ça depasse pas 0.10€ par km.
 - Tu a ecrit la procedure qui verifie si un inscrit il est le conducteur tu trajet et elle marche.
 Maintenant faut faire un trigger que à l'ajout d'un avis (INSERT) il verifie si celui qui a donne' l'avis est conducteur:
 si OUI alors il peut pas donner l'avis,
 si NON alors on verifie si il a partecipe' au trajet et si OUI il pourra evaluer le conducteur;
-- Un trigger sur INSERT trajet qui verifie que le conducteur aille bien une voiture (et si la voiture qu'il a mit elle est bien à lui et pas de quelqu'un d'autre).
