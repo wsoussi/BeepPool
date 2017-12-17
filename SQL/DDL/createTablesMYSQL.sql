@@ -13,8 +13,8 @@ create table inscrit
         -- la longueur change de pays à pays (par example USA a 9 chiffres)
     pays VARCHAR(50),
     numTel VARCHAR(13) not null,
-    mdp VARCHAR(26),
-    estAdmin BIT DEFAULT 0,
+    mdp VARCHAR(26)not null,
+    estAdmin TINYINT DEFAULT 0,
     dateFinBlockage DATE,
     primary key inscrit_pk (email)
 );
@@ -35,8 +35,8 @@ create table voiture
 
 create table ville
 (
-    coordX DECIMAL,
-    coordY DECIMAL,
+    coordX DECIMAL(9,6),
+    coordY DECIMAL(9,6),
     nom VARCHAR(100) not null,
     region  VARCHAR(100) not null,
     pays VARCHAR(50)not null,
@@ -50,10 +50,10 @@ create table trajet_type
         -- je met le prix comme not null parce que
         -- dans notre vision c'est tout l'interet
         -- d'avoir la table trajet_type
-    villeDepX DECIMAL,
-    villeDepY DECIMAL,
-    villeArrX DECIMAL,
-    villeArrY DECIMAL,
+    villeDepX DECIMAL(9,6),
+    villeDepY DECIMAL(9,6),
+    villeArrX DECIMAL(9,6),
+    villeArrY DECIMAL(9,6),
     email_admin VARCHAR(200),
     primary key trajet_type_PK (numTT),
     foreign key trajet_type_villeDep_FK (villeDepX,villeDepY) references ville (coordX,coordY) on update cascade on delete cascade,
@@ -72,10 +72,10 @@ create table trajet
     conducteur VARCHAR(200) not null,
     vehiculeImm VARCHAR(8) not null,
     nbPlaceDispo INTEGER(50) not null CHECK (nbPlaceDispo > 0 and nbPlaceDispo < (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)),
-    villeDepX DECIMAL not null,
-    villeDepY DECIMAL not null,
-    villeArrX DECIMAL not null,
-    villeArrY DECIMAL not null,
+    villeDepX DECIMAL(9,6) not null,
+    villeDepY DECIMAL(9,6) not null,
+    villeArrX DECIMAL(9,6) not null,
+    villeArrY DECIMAL(9,6) not null,
     numTrajetType INTEGER,
     primary key trajet_PK (numT),
       foreign key trajet_conducteur_FK (conducteur) REFERENCES inscrit(email),
@@ -88,8 +88,8 @@ create table trajet
 create table etapes
 (
   numT INTEGER,
-  coordX DECIMAL,
-  coordY DECIMAL,
+  coordX DECIMAL(9,6),
+  coordY DECIMAL(9,6),
   nbPerRec INT DEFAULT 0,
   nbPerDes INT DEFAULT 0,
     constraint etapes_PK primary key (numT, coordX, coordY),
@@ -133,6 +133,19 @@ BEGIN
            SET MESSAGE_TEXT = 'Valeur invalide pour rang de inscrit';
    END IF;
 END//
+CREATE TRIGGER VERIF_INSCRIT_UPDATE BEFORE UPDATE ON inscrit
+FOR EACH ROW
+BEGIN
+   IF (NEW.dateNaiss >= CURDATE() OR NEW.dateNaiss <= DATE_SUB(CURDATE(), INTERVAL 100 YEAR)) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour dateNaiss de inscrit';
+
+   ELSEIF (NEW.rang > 5 OR NEW.rang < 0) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour rang de inscrit';
+   END IF;
+END//
+
 
 CREATE TRIGGER VERIF_VOITURE BEFORE INSERT ON voiture
 FOR EACH ROW
@@ -142,8 +155,31 @@ BEGIN
            SET MESSAGE_TEXT = 'Valeur invalide pour annee de voiture';
    END IF;
 END//
+CREATE TRIGGER VERIF_VOITURE_UPDATE BEFORE UPDATE ON voiture
+FOR EACH ROW
+BEGIN
+   IF (NEW.annee < 1883 OR NEW.annee > year(CAST(CURRENT_TIMESTAMP AS DATE))) THEN
+       SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour annee de voiture';
+   END IF;
+END//
+
 
 CREATE TRIGGER VERIF_TRAJET BEFORE INSERT ON trajet
+FOR EACH ROW
+BEGIN
+   IF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
+   ELSEIF (NEW.date_ar < NEW.date_dep) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
+   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
+          SIGNAL SQLSTATE '45000'
+           SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
+   END IF;
+END//
+CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
 FOR EACH ROW
 BEGIN
    IF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN

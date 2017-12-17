@@ -6,13 +6,11 @@ WHERE trajet.conducteur = inscrit.email AND
       trajet.villeDepY = vd.coordY AND
       trajet.villeArrX = va.coordX AND
       trajet.villeArrY = va.coordY AND
-      vd.nomV = 'Montpellier' AND
-      vd.codePostale = 'codePMont' AND
-      va.nomV = 'Marseille' AND
-      va.codePoste = 'codePMarse' AND
+      vd.nom = 'Montpellier' AND
+      va.nom = 'Marseille' AND
       date_dep >= 'date'-'toleranceEnJours' AND
       date_dep <= 'date'+'toleranceEnJours' AND
-      nbPlace > (SELECT count(*)
+      trajet.nbPlaceDispo > (SELECT count(*)
                  FROM parteciper
                  WHERE parteciper.numT = trajet.numT
                 )

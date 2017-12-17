@@ -25,31 +25,25 @@ END IF;
 
 END//
 
-
--- Ajouter trajet si il est inscrit et pas blocke'
+-- Ajouter trajet si il est inscrit et pas blocke' (complete' en PHP)
 BEGIN
-DECLARE
-  IF NOT isBlocked('email') THEN
+  IF (NOT isBlocked('email')) THEN
       INSERT INTO trajet VALUES (prix, date_dep , date_ar , adr_rdv , adr_dep , nbPlace , conducteur , vehiculeImm , villeDepX , villeDepY , villeArrX , villeArrY, numTrajetType )
                                 ('prix', 'date_dep' , 'date_ar' , 'adr_rdv' , 'adr_dep' , 'nbPlace' , 'conducteur' , 'vehiculeImm' , 'villeDepX' , 'villeDepY' , 'villeArrX' , 'villeArrY', 'numTrajetType')
   END IF
 END//
 
--- Changer le trajet si il est inscrit et pas blocke'
-
-DECLARE
-
+-- Changer le trajet si il est inscrit et pas blocke' (complete' en PHP)
 BEGIN
-  IF NOT isBlocked('email') THEN
+  IF (NOT isBlocked('email')) THEN
       UPDATE trajet SET .... WHERE conducteur = 'email' and numT= 'numTCible';
   END IF
 END//
 
--- Laisser un avis, vérifie s'il est conducteur ou covoitueur
+--vérifie s'il est conducteur ou covoitureur
 CREATE PROCEDURE estConducteur
 (IN var_email VARCHAR(200), IN var_num_trajet INTEGER, OUT var_resultat TINYINT(1) UNSIGNED )
 BEGIN
-
 DECLARE email_conducteur VARCHAR(200);
 SELECT conducteur INTO email_conducteur
 FROM trajet, inscrit, participer
@@ -65,39 +59,38 @@ END IF;
 
 END//
 
--- A GARDER SI BESOIN
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
---CREATE PROCEDURE estTrajetType
---(IN depX DECIMAL,IN depY DECIMAL, IN arrX, IN arrY, OUT resultat TINYINT(1) UNSIGNED )
---BEGIN
+CREATE PROCEDURE estTrajetType
+(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat TINYINT(1) UNSIGNED )
+BEGIN
 
---DECLARE nbD INT;
---DECLARE nbA INT;
+DECLARE nbD INT;
+DECLARE nbA INT;
 
---SELECT count(*) INTO nbD FROM trajet_type
---WHERE (villeDepX = depX OR villeArrX = depX)
---AND (villeDepY = depY OR villeArrY = depY);
+SELECT count(*) INTO nbD FROM trajet_type
+WHERE (villeDepX = depX OR villeArrX = depX)
+AND (villeDepY = depY OR villeArrY = depY);
 
---SELECT count(*) INTO nbA FROM trajet_type
---WHERE (villeDepX = arrX OR villeArrX = arrX)
---AND (villeDepY = arrY OR villeArrY = arrY);
+SELECT count(*) INTO nbA FROM trajet_type
+WHERE (villeDepX = arrX OR villeArrX = arrX)
+AND (villeDepY = arrY OR villeArrY = arrY);
 
---IF nbD >= 1 AND nbA >= 1 THEN
-    --SET resultat = true;
---ELSE
-    --SET resultat = false;
---END IF;
+IF nbD >= 1 AND nbA >= 1 THEN
+    SET resultat = true;
+ELSE
+    SET resultat = false;
+END IF;
 
---END//
+END//
 
 
 -- Procédure pour calculer la distance entre deux ville
 CREATE PROCEDURE calcul_distance
-(IN depX DECIMAL,IN depY DECIMAL, IN arrX, IN arrY, OUT resultat DECIMAL(6,2))
+(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat DECIMAL)
 BEGIN
 DECLARE R DECIMAL;
 
-SET R = 6372,795477598;
+SET R = 6372.795477598;
 
 SET resultat = R * ACOS( SIN(depY) * SIN(arrY) +
 COS(depY) * COS(arrY) * COS(depX - arrX));
