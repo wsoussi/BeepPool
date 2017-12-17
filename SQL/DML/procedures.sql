@@ -46,7 +46,7 @@ END//
 
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
 CREATE PROCEDURE estTrajetType
-(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat INTEGER UNSIGNED )
+(IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat INTEGER UNSIGNED )
 BEGIN
 
 DECLARE nbD INT;
@@ -70,7 +70,7 @@ END//
 
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
 CREATE PROCEDURE trajetType
-(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat INTEGER)
+(IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat INTEGER)
 BEGIN
 
 DECLARE numTTR INTEGER DEFAULT -1;
@@ -86,9 +86,9 @@ END//
 
 -- Procédure pour calculer la distance entre deux ville
 CREATE PROCEDURE calcul_distance
-(IN depX DECIMAL,IN depY DECIMAL, IN arrX DECIMAL, IN arrY DECIMAL, OUT resultat DECIMAL)
+(IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat DECIMAL(6,2))
 BEGIN
-DECLARE R DECIMAL;
+DECLARE R DECIMAL(13,9);
 
 SET R = 6372.795477598;
 
