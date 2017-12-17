@@ -1,4 +1,4 @@
--- verifier que seulement un admin peut ajouter un trajet type
+conducteur-- verifier que seulement un admin peut ajouter un trajet type
 CREATE TRIGGER VERIF_TRAJET_TYPE_INSERT BEFORE INSERT ON trajet_type
 FOR EACH ROW
 BEGIN
@@ -26,12 +26,12 @@ END//
 CREATE TRIGGER VERIF_PARTICIPER_NODRIVER BEFORE INSERT ON participer
 FOR EACH ROW
 BEGIN
-DECLARE estLeConducteur BOOLEAN;
+DECLARE estLeConducteur TINYINT;
 -- declarations pour la deuxieme partie
 DECLARE leConducteur VARCHAR(200);
 DECLARE placesOccup TINYINT;
 DECLARE placesTot TINYINT;
-SELECT count(*) INTO estLeConducteur FROM participer,trajet WHERE participer.numT = trajet.numT AND NEW.numCovoitureur = participer.numCovoitureur;
+SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AND NEW.numCovoitureur = conducteur;
    IF (estLeConducteur = 1) THEN
        SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par default.';
@@ -54,12 +54,12 @@ END//
 CREATE TRIGGER VERIF_PARTICIPER_NODRIVER_UPDATE BEFORE UPDATE ON participer
 FOR EACH ROW
 BEGIN
-DECLARE estLeConducteur BOOLEAN;
+DECLARE estLeConducteur TINYINT;
 -- declarations pour la deuxieme partie
 DECLARE leConducteur VARCHAR(200);
 DECLARE placesOccup TINYINT;
 DECLARE placesTot TINYINT;
-SELECT count(*) INTO estLeConducteur FROM participer,trajet WHERE participer.numT = trajet.numT AND NEW.numCovoitureur = participer.numCovoitureur;
+SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AND NEW.numCovoitureur = conducteur;
    IF (estLeConducteur = 1) THEN
        SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par default.';
@@ -103,7 +103,7 @@ SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailPropri
    ELSEIF (NEW.date_ar < NEW.date_dep) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
-   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
+   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE NEW.vehiculeImm = immatriculation)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
    ELSEIF (voitureALui = 0) THEN
@@ -133,7 +133,7 @@ SELECT count(*) INTO voitureALui FROM voiture WHERE NEW.conducteur = emailPropri
    ELSEIF (NEW.date_ar < NEW.date_dep) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_ar de trajet';
-   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE vehiculeImm = immatriculation)) THEN
+   ELSEIF (NEW.nbPlaceDispo <= 0 OR NEW.nbPlaceDispo >= (SELECT nbPlaces FROM voiture WHERE NEW.vehiculeImm = immatriculation)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
    ELSEIF (voitureALui = 0) THEN

@@ -1,6 +1,8 @@
 -- Si l'inscrit est blocke' RENVOYER VRAI
-CREATE PROCEDURE isBlocked (IN varEmail VARCHAR(200), OUT resultat TINYINT(1) UNSIGNED)
+CREATE FUNCTION isBlocked (varEmail VARCHAR(200))
+RETURNS TINYINT(1) UNSIGNED
 BEGIN
+DECLARE resultat TINYINT(1) UNSIGNED;
 DECLARE nb_email INT;
 DECLARE dateB DATE;
 
@@ -22,7 +24,7 @@ IF (nb_email = 1) THEN
 ELSE
     SET resultat = TRUE;
 END IF;
-
+RETURN resultat;
 END//
 
 --vérifie s'il est conducteur ou covoitureur
@@ -45,34 +47,11 @@ END IF;
 END//
 
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
-CREATE PROCEDURE estTrajetType
-(IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat INTEGER UNSIGNED )
+CREATE FUNCTION trajetType
+(depX DECIMAL(9,6),depY DECIMAL(9,6),arrX DECIMAL(9,6), arrY DECIMAL(9,6))
+RETURNS INTEGER
 BEGIN
-
-DECLARE nbD INT;
-DECLARE nbA INT;
-
-SELECT count(*) INTO nbD FROM trajet_type
-WHERE (villeDepX = depX OR villeArrX = depX)
-AND (villeDepY = depY OR villeArrY = depY);
-
-SELECT count(*) INTO nbA FROM trajet_type
-WHERE (villeDepX = arrX OR villeArrX = arrX)
-AND (villeDepY = arrY OR villeArrY = arrY);
-
-IF nbD >= 1 AND nbA >= 1 THEN
-    SET resultat = true;
-ELSE
-    SET resultat = false;
-END IF;
-
-END//
-
--- Procédure pour savoir si un trajet fait parti d'un trajet type
-CREATE PROCEDURE trajetType
-(IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat INTEGER)
-BEGIN
-
+DECLARE resultat INTEGER;
 DECLARE numTTR INTEGER DEFAULT -1;
 
 SELECT numTT INTO numTTR FROM trajet_type
@@ -80,7 +59,7 @@ WHERE (villeDepX = depX AND villeDepY = depY)
 AND (villeArrX = arrX AND villeArrY = arrY);
 
 SET resultat = numTTR;
-
+RETURN resultat;
 END//
 
 
