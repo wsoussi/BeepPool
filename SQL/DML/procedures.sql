@@ -103,3 +103,10 @@ CREATE PROCEDURE calcul_prix_par_km
 BEGIN
     SET resultat = ( prix/distance );
 END//
+
+-- Procédure calcul temps moyen d'un trajet
+CREATE PROCEDURE calcul_temps_par_trajet
+(IN distance DECIMAL,OUT resultat DECIMAL)
+BEGIN
+    SET resultat = ( distance / 90 );
+END//
