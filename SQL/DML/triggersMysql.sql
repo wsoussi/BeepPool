@@ -28,6 +28,7 @@ FOR EACH ROW
 BEGIN
 DECLARE estLeConducteur TINYINT;
 -- declarations pour la deuxieme partie
+DECLARE trajetExiste TINYINT DEFAULT 0;
 DECLARE leConducteur VARCHAR(200);
 DECLARE placesOccup TINYINT;
 DECLARE placesTot TINYINT;
@@ -36,13 +37,17 @@ SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AN
        SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par default.';
    END IF;
--- verifier qu'un membre ne peut pas s'inscrire s'il est blocke' ou l'autre est blocke' ou il y a pas de place
+-- verifier qu'un membre ne peut pas s'inscrire s'il est blocke' ou l'autre est blocke' ou il y a pas de place ou numTrajet n'existe pas
    SELECT conducteur INTO leConducteur FROM trajet WHERE trajet.numT = NEW.numT;
+    SELECT count(*) INTO trajetExiste FROM trajet WHERE trajet.numT = NEW.numT;
    SELECT nbPlaceDispo INTO placesTot FROM trajet WHERE trajet.numT = NEW.numT;
    SELECT count(*) INTO placesOccup FROM participer WHERE participer.numT = NEW.numT;
       IF (isBlocked(NEW.numCovoitureur)) THEN
           SIGNAL SQLSTATE '45000'
               SET MESSAGE_TEXT = 'Vous etes blocke`, donc vous ne pouvez participer à aucun trajet.';
+      ELSEIF (trajetExiste = 0) THEN
+          SIGNAL SQLSTATE '45000'
+              SET MESSAGE_TEXT = 'Le trajet reference` n`est pas trouve`.';
       ELSEIF (isBlocked(leConducteur)) THEN
           SIGNAL SQLSTATE '45000'
               SET MESSAGE_TEXT = 'Le conducteur de ce trajet est blocke`, sont trajet n`est plus valable.';
@@ -51,11 +56,13 @@ SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AN
               SET MESSAGE_TEXT = 'Le trajet est complet.';
       END IF;
 END//
+
 CREATE TRIGGER VERIF_PARTICIPER_NODRIVER_UPDATE BEFORE UPDATE ON participer
 FOR EACH ROW
 BEGIN
 DECLARE estLeConducteur TINYINT;
 -- declarations pour la deuxieme partie
+DECLARE trajetExiste TINYINT DEFAULT 0;
 DECLARE leConducteur VARCHAR(200);
 DECLARE placesOccup TINYINT;
 DECLARE placesTot TINYINT;
@@ -66,11 +73,15 @@ SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AN
    END IF;
 -- verifier qu'un membre ne peut pas s'inscrire s'il est blocke' ou l'autre est blocke' ou il y a pas de place
    SELECT conducteur INTO leConducteur FROM trajet WHERE trajet.numT = NEW.numT;
+   SELECT count(*) INTO trajetExiste FROM trajet WHERE trajet.numT = NEW.numT;
    SELECT nbPlaceDispo INTO placesTot FROM trajet WHERE trajet.numT = NEW.numT;
    SELECT count(*) INTO placesOccup FROM participer WHERE participer.numT = NEW.numT;
       IF (isBlocked(NEW.numCovoitureur)) THEN
           SIGNAL SQLSTATE '45000'
               SET MESSAGE_TEXT = 'Vous etes blocke`, donc vous ne pouvez participer à aucun trajet.';
+      ELSEIF (trajetExiste = 0) THEN
+          SIGNAL SQLSTATE '45000'
+              SET MESSAGE_TEXT = 'Le trajet reference` n`est pas trouve`.';
       ELSEIF (isBlocked(leConducteur)) THEN
           SIGNAL SQLSTATE '45000'
               SET MESSAGE_TEXT = 'Le conducteur de ce trajet est blocke`, sont trajet n`est plus valable.';
@@ -91,7 +102,7 @@ DECLARE voitureALui BOOLEAN;
 DECLARE distance DECIMAL(6,2);
 DECLARE trajet_Type INTEGER;
 DECLARE prix_TT DECIMAL(6,2);
-CALL trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,trajet_Type);
+SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
@@ -127,7 +138,7 @@ END IF;
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix trop élevé.';
         ELSE
-            SET NEW.numTrajetType = trajetType;
+            SET NEW.numTrajetType = trajet_Type;
         END IF;
    ELSEIF (trajet_Type = -1) THEN
         IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 ) THEN
@@ -146,7 +157,7 @@ DECLARE voitureALui BOOLEAN;
 DECLARE distance DECIMAL(6,2);
 DECLARE trajet_Type INTEGER;
 DECLARE prix_TT DECIMAL(6,2);
-CALL trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,trajet_Type);
+SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
@@ -182,7 +193,7 @@ END IF;
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix trop élevé.';
         ELSE
-            SET NEW.numTrajetType = trajetType;
+            SET NEW.numTrajetType = trajet_Type;
         END IF;
    ELSEIF (trajet_Type = -1) THEN
         IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 ) THEN
