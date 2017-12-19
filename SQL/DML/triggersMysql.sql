@@ -147,6 +147,7 @@ END IF;
         END IF;
    END IF;
 END//
+
 CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
 FOR EACH ROW
 BEGIN
@@ -203,44 +204,62 @@ END//
 
 
 -- triggers sur l'ajout des avis --
-
 CREATE TRIGGER VERIF_AVIS_INSERT BEFORE INSERT ON avis
 FOR EACH ROW
 BEGIN
-DECLARE estConducteur TINYINT(1) UNSIGNED = estConducteur(NEW.numDonneur, NEW.numT);
-DECLARE numConducteur INTEGER;
+DECLARE estConducteur TINYINT(1) UNSIGNED;
+DECLARE numConducteur VARCHAR(200);
+DECLARE estCovoitureurD TINYINT(1) UNSIGNED;
+DECLARE estCovoitureurR TINYINT(1) UNSIGNED;
+DECLARE dateTrajet DATE;
 
-IF (conducteur = true) THEN
-    SELECT numT INTO numConducteur FROM trajet, avis
-    WHERE trajet.numT = NEW.numT;
-END IF;
+SET estConducteur = estConducteur(NEW.numDonneur, NEW.numT);
+SET estCovoitureurD = estCovoitureur(NEW.numDonneur, NEW.numT);
+SET estCovoitureurR = estCovoitureur(NEW.numReceveur, NEW.numT);
+SELECT conducteur INTO numConducteur FROM trajet WHERE trajet.numT = NEW.numT;
+SELECT date_ar INTO dateTrajet FROM trajet WHERE trajet.numT = NEW.numT;
 
-IF (NEW.numDonneur = NEW.numReceveur) THEN
+IF (dateTrajet > CURDATE()) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement apres que le trajet est conclu';
+ELSEIF (NEW.numDonneur = NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
-ELSEIF (estConducteur = false AND numReceveur <>  numConducteur) THEN
+ELSEIF (estCovoitureurD AND numConducteur <> NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
+ELSEIF (estConducteur = true AND estCovoitureurR = false) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous êtes le conducteur, pouvez donner un avis seulement aux covoitureurs du trajet selectionne`';
 END IF;
 END//
-
 
 CREATE TRIGGER VERIF_AVIS_UPDATE BEFORE UPDATE ON avis
 FOR EACH ROW
 BEGIN
-DECLARE estConducteur TINYINT(1) UNSIGNED = estConducteur(NEW.numDonneur, NEW.numT);
-DECLARE numConducteur INTEGER;
+DECLARE estConducteur TINYINT(1) UNSIGNED;
+DECLARE numConducteur VARCHAR(200);
+DECLARE estCovoitureurD TINYINT(1) UNSIGNED;
+DECLARE estCovoitureurR TINYINT(1) UNSIGNED;
+DECLARE dateTrajet DATE;
 
-IF (conducteur = true) THEN
-    SELECT numT INTO numConducteur FROM trajet, avis
-    WHERE trajet.numT = NEW.numT;
-END IF;
+SET estConducteur = estConducteur(NEW.numDonneur, NEW.numT);
+SET estCovoitureurD = estCovoitureur(NEW.numDonneur, NEW.numT);
+SET estCovoitureurR = estCovoitureur(NEW.numReceveur, NEW.numT);
+SELECT conducteur INTO numConducteur FROM trajet WHERE trajet.numT = NEW.numT;
+SELECT date_ar INTO dateTrajet FROM trajet WHERE trajet.numT = NEW.numT;
 
-IF (NEW.numDonneur = NEW.numReceveur) THEN
+IF (dateTrajet > CURDATE()) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement apres que le trajet est conclu';
+ELSEIF (NEW.numDonneur = NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
-ELSEIF (estConducteur = false AND numReceveur <>  numConducteur) THEN
+ELSEIF (estCovoitureurD AND numConducteur <> NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
+ELSEIF (estConducteur = true AND estCovoitureurR = false) THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Vous êtes le conducteur, pouvez donner un avis seulement aux covoitureurs du trajet selectionne`';
 END IF;
 END//

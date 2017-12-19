@@ -42,8 +42,19 @@ insert into trajet
   VALUES
   (20, '2017-12-23', '2017-12-23', 'fac des sciences', 'theatre de Cannes', 'wissem.soussi@etu.umontpellier.fr', 'wiz96', 3, 3.877230, 43.610920, 7.017369, 43.552847);
 
+  insert into trajet
+    (prix, date_dep, date_ar, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)
+    VALUES
+    (20, '2017-12-19', '2017-12-19', 'fac des sciences', 'theatre de Cannes', 'wissem.soussi@etu.umontpellier.fr', 'wiz96', 3, 3.877230, 43.610920, 7.017369, 43.552847);
+
 --partecipation au trajet
 insert into participer
   (numT, numCovoitureur)
   values
-  (1,'wissem.soussi@etu.umontpellier.fr');
+  (3,'lazar.angelov@dope.fr');
+
+--donner un avis
+insert into avis
+  (numT,numDonneur,numReceveur,nbEtoile,commentaire)
+  VALUES
+  (3,'jeremie.daughter@montp.fr','lazar.angelov@dope.fr',5,'Sympa');

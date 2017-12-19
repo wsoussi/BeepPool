@@ -27,7 +27,7 @@ END IF;
 RETURN resultat;
 END//
 
---vérifie s'il est conducteur ou covoitureur
+--vérifie s'il est conducteur du trajet
 CREATE FUNCTION estConducteur
 (var_email VARCHAR(200),var_num_trajet INTEGER)
 RETURNS TINYINT(1) UNSIGNED
@@ -35,10 +35,8 @@ BEGIN
 DECLARE var_resultat TINYINT(1) UNSIGNED;
 DECLARE email_conducteur VARCHAR(200);
 SELECT conducteur INTO email_conducteur
-FROM trajet, inscrit, participer
-WHERE trajet.numT = participer.numT AND  inscrit.email = trajet.conducteur
-AND trajet.numT = var_num_trajet
-AND participer.numCovoitureur = var_email;
+FROM trajet
+WHERE trajet.numT = var_num_trajet;
 
 IF email_conducteur = var_email THEN
     SET var_resultat = true;
@@ -46,6 +44,22 @@ ELSE
     SET var_resultat = false;
 END IF;
 RETURN var_resultat;
+END//
+
+--vérifie s'il est covoitureur du trajet
+CREATE FUNCTION estCovoitureur
+(var_email VARCHAR(200),var_num_trajet INTEGER)
+RETURNS TINYINT(1) UNSIGNED
+BEGIN
+DECLARE nb TINYINT(1) DEFAULT 0;
+SELECT count(*) INTO nb
+FROM participer
+WHERE participer.numT = var_num_trajet AND  participer.numCovoitureur = var_email;
+IF (nb > 0) THEN
+    RETURN true;
+ELSE
+    RETURN false;
+END IF;
 END//
 
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
