@@ -9,7 +9,7 @@ WHERE trajet.conducteur = inscrit.email AND
       AND date_dep > curdate()
       AND villeDepX = "value" AND villeDepY = "value"
       AND villeArrX = "value" AND villeArrY = "value"
-      AND date_dep < ("value"+"valueTollerance") AND date_dep >= (MAX("value"-"valueGap",curdate()))
+      AND date_dep < DATE_ADD("value", INTERVAL "valueTollerance" DAY) AND date_dep >= (MAX(DATE_SUB("value", INTERVAL "valueGap" DAY),curdate()))
       AND trajet.nbPlaceDispo > (SELECT count(*)
           FROM parteciper
           WHERE parteciper.numT = trajet.numT)
