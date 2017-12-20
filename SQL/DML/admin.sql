@@ -22,4 +22,8 @@ END//
 
 -- création de trajet type (sous les contraintes des triggers dans le fichier triggersMysql.sql)
 INSERT INTO trajet_type(prixParKm, villeDepX, villeDepY, villeArrX, villeArrY, email_admin)
-VALUES (0.1,3.8772300,43.6109200, 7.017369, 43.552847, 'wissem.soussi@etu.umontpellier.fr');
+VALUES ("value", "value", "value", "value", "value", "value");
+
+-- ajout d'une ville
+INSERT INTO ville(coordX,coordY,nom,pays,region)
+VALUES ("value","value", "value", "value", "value");
