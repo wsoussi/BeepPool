@@ -94,7 +94,7 @@
 <br>
 <br>
 
-ECLAIREMENT DE LA CONCEPTION
+<h4> 3) ECLAIREMENT DE LA CONCEPTION</h4>
 <br>
 <br>
 Un internaute qui rentre dans le site sans s'identifier peut (fichier “invite.sql”) rechercher des trajets en insérant la ville de départ, la ville d'arrivée, une date et une “tolérance” de jours: si par exemple la date est le 10/01/2018 et la tolérance est de 5 jours les trajets affichés seront ceux du 05/01/2018 jusqu’à 15/01/2018.
