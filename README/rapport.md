@@ -136,6 +136,19 @@ La date d’immatriculation, si spécifiée, doit être inférieur à la date d�
 
 <br>
 <br>
+Un membre propose un trajet ....(table trajet)
+conditions trajets....(trigger trajet et procedures(fonctions) liees )
+<br>
+<br>
+Un membre participe à un trajet ....(table participer)
+conditions participer....(trigger participer et procedures(fonctions) liees )
+<br>
+<br>
+Un membre peut donner un avis ....(table avis)
+conditions avis....(trigger avis et procedures(fonctions) liees )
+<br>
+<br>
+Un membre peut faire la recherche comme l'invite' mais il voit tous les infos sur le conducteur
 
 <h4>EXEMPLE DE CODE SQL DANS MARKDOWN ;)</h4>
 <br>
