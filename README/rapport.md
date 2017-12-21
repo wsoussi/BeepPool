@@ -121,7 +121,7 @@ Pour avoir plus d’informations sur le conducteur d’un trajet et pour partici
 Le membre sera identifié par un email, et il devra renseigner obligatoirement son nom, prénom, sa date de naissance, son numéro de téléphone et un mot de passe (fichier “createTablesMYSQL.sql” -> `TABLE inscrit`).
 La notation des membres est assurée par un système d'étoile (de 0 à 5, comme usuellement). Il n’y a pas de limite d’âge, par contre la date de naissance ne doit pas bien-sûr être supérieure à la date courante et nous avons choisi de fixe l'âge maximal à 120 ans (fichier “createTablesMYSQL.sql” -> `TRIGGER VERIF_INSCRIT`).
 
-**Note**: chaque trigger dans la base de données est dupliqué en trigger `before insert` et trigger `before update` puisque MYSQL ne permet pas de faire ` insert OR update` .
+**Note**: chaque trigger dans la base de données est dupliqué en trigger `before insert` et trigger `before update` puisque MYSQL ne permet pas de faire ` insert OR update` . Pour l'utilisation des `CHECK`, nous les avons laissés dans le code même s'ils ne sont pas gérés par MySQL (ils sont quand même parsés). Ils ont néanmoins bien été implémentés en utilisant des triggers.
 
 
 
