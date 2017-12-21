@@ -57,6 +57,9 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
 
 
 <h4>1) MODÈLE ENTITÉ ASSOCIATION</h4>
@@ -65,10 +68,13 @@
 <img src="./modeleEA.png">
 <br>
 <br>
+<br>
+<br>
 
 <h4>2) MODÈLE RELATIONNEL</h4>
 <br>
 <br>
+
 **INSCRIT**
 (<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp , estAdmin , dateFinBlockage )
 
@@ -94,9 +100,12 @@
 ( <u>_numT_</u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u>, nbEtoile, commentaire )
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
 
 <h4> 3) ECLAIREMENT DE LA CONCEPTION</h4>
-<br>
 <br>
 Un internaute qui rentre dans le site sans s'identifier peut (fichier “invite.sql”) rechercher des trajets en insérant la ville de départ, la ville d'arrivée, une date et une “tolérance” de jours: si par exemple la date est le 10/01/2018 et la tolérance est de 5 jours les trajets affichés seront ceux du 05/01/2018 jusqu’à 15/01/2018.
 Si la borne inférieure de cet interval est inférieur à la date courante alors la borne inférieure va être changée par la date courante.
@@ -112,9 +121,10 @@ Le ranking des membres est entre 0 et 5 (l'évaluation classique par nombre d'é
 Un membre peut enregistrer dans la base de données une voiture qu’il utilise pour le covoiturage; la voiture sera identifiée par l’immatriculation, et devra obligatoirement avoir une marque, un modèle, un nombre de places et l’email du propriétaire qui doit être un membre du site (fichier “createTablesMYSQL.sql” -> `table voiture`).
 La date d’immatriculation, si spécifiée, doit être inférieur à la date d’aujourd’hui et supérieur au 1883 (premières voitures commercialisées) et le nombre de places se situe entre 0 et 9 (si superieur de 9 on parle de mini-bus et ne plus de voitures) (fichier “createTablesMYSQL.sql” -> `trigger VERIF_VOITURE`).
 
+<br>
+<br>
 
 <h4>EXEMPLE DE CODE SQL DANS MARKDOWN ;)</h4>
-<br>
 <br>
 ```sql
 insert into voiture (immatriculation, marque, modele, annee, couleur, nbPlaces, emailProprietaire)
