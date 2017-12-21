@@ -90,8 +90,7 @@ create table etapes
   numT INTEGER,
   coordX DECIMAL(9,6),
   coordY DECIMAL(9,6),
-  nbPerRec INT DEFAULT 0,
-  nbPerDes INT DEFAULT 0,
+  ordre INT,
     constraint etapes_PK primary key (numT, coordX, coordY),
     foreign key etapes_numT_FK (numT) references trajet(numT),
     foreign key etapes_coord_FK (coordX,coordY) references ville(coordX,coordY)
@@ -101,6 +100,8 @@ create table participer
 (
   numT INTEGER,
   numCovoitureur VARCHAR(200),
+  iVM INT,
+  iVD INT CHECK (iVD > iVM),
   primary key participer_PK (numT, numCovoitureur),
   foreign key participer_numCovoitureur_FK (numCovoitureur) references inscrit(email),
   foreign key participer_numT_FK (numT) references trajet(numT)

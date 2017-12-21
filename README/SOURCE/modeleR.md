@@ -15,10 +15,10 @@
 ( <u>numT</u> , prix , date_dep , date_ar , adr_rdv , adr_ar , nbPlacesDispo , _conducteur_ , _vehiculeImm_ ,  _villeDepX_ ,  _villeDepY_ , _villeArrX_ , _villeArrY_ , _numTrajetType_ )
 
 **ETAPES**
-( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , nbPerRec , nbPerDes )
+( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , ordre )
 
 **PARTECIPER**
-( <u>_numT_</u> , <u>_emailCovoitureur_</u> )
+( <u>_numT_</u> , <u>_emailCovoitureur_</u> , iVM , iVD )
 
 
 **AVIS**

@@ -138,3 +138,54 @@ SET hours = TRUNCATE(distance/90,0);
 SET minutes = (distance/90*100 - hours*100)/10*6;
     SET resultat = hours*10000 + minutes*100;
 END//
+
+--vérifie s'il y a des places disponibles par rapport aux viles etapes
+CREATE FUNCTION estPlein
+(numT INTEGER, iVM INT, iVD INT)
+RETURNS TINYINT(1) UNSIGNED
+BEGIN
+DECLARE k INT DEFAULT 0;
+DECLARE placesOcc INT;
+DECLARE placesTOT INT;
+DECLARE nbVillesEtapes INT;
+-- nombre de place occupe' des le depart
+SELECT count(*) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVM = NULL;
+SELECT trajet.nbPlaceDispo INTO placesTOT FROM trajet WHERE trajets.numT = numT;
+SELECT count(*) INTO nbVillesEtapes FROM etapes WHERE etapes.numT = numT;
+-- SOMMER JUSQU'A iVM
+IF (nbVillesEtapes > 0 AND iVM <> NULL) THEN
+    arriverAiVM: LOOP
+      SET k = k + 1;
+      select (count(*) + placesOcc) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVM = k;
+      select (placesOcc - count(*)) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVD = k;
+      IF (k <= iVM) THEN
+        ITERATE arriverAiVM;
+      END IF;
+      LEAVE arriverAiVM;
+    END LOOP arriverAiVM;
+END IF;
+-- sortir si placesOcc = nbPlaceDispo ou j'ai parcouru tous les etapes
+IF (iVD = NULL) THEN
+    SET iVD = nbVillesEtapes;
+END IF;
+IF (nbVillesEtapes > 0) THEN
+      IF (k = 0) THEN
+          SET k = 1;
+      END IF;
+      arriverAiVD: LOOP
+      IF (k < iVD AND placesOcc <= placesTOT) THEN
+        SET k = k + 1;
+        select (count(*) + placesOcc) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVM = k;
+        select (placesOcc - count(*)) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVD = k;
+        ITERATE arriverAiVD;
+      END IF;
+      LEAVE arriverAiVD;
+      END LOOP arriverAiVD;
+END IF;
+-- renvoyer resultat
+IF (PlaceOcc = placesTOT) THEN
+   RETURN true;
+ELSE
+  RETURN false;
+END IF;
+END//
