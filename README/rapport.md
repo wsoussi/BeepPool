@@ -143,7 +143,6 @@ La date d’immatriculation, si spécifiée, doit être inférieure à la date d
 
 <br>
 <br>
-<b>À FAIRE : RAJOUTER L'INSERTION AUTOMATIQUE DE L'HEURE D'ARRIVÉE AUTOMATIQUEMENT (mettre à jour en conséquences)</b>
 
 Un membre peut proposer un trajet. Pour cela il doit insérer obligatoirement son identifiant (email), sa voiture utilisée, le nombre de place qu'il souhaite autoriser, l'heure de départ, les villes de départ et d'arrivée ainsi que leur adresse. L'heure d'arrivée est calculée automatiquement par une procédure. Nous avons fixé la vitesse moyenne d'un trajet à 90 km/h et avec la distance, nous pouvons calculer la durée du trajet et donc déterminer l'heure d'arrivée approximative. Avant l'insertion du trajet dans la base, de nombreuses conditions seront vérifiées (fichier "triggersMysql.sql" -> `TRIGGER VERIF_TRAJET`). </br>
 Tout d'abord, si le membre est bloqué, il ne pourra pas créer de trajet. Si le trajet proposé correspond à un trajet type, alors le trajet sera référencé par ce trajet type (et le prix sera vérifié pour qu'il soit inférieur ou égal à celui du trajet type). Sinon nous vérifions, grâce à une procédure, que le prix au km est inférieur ou égal à 0,10€/km (limite arbitraire qui nous parait assez réaliste). La distance du trajet est calculée automatiquement par une procédure à partir de la longitude et la latitude des villes d'arrivée et de départ, en prenant un trajet en ligne droite et en prenant en compte la rondité de la terre. </br>

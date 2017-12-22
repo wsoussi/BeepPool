@@ -9,7 +9,7 @@ insert into trajet
   ("value", "value", "value", "value", "value", "value", "value", "value", "value", "value", "value");
 
 -- participer à un trajet
-INSERT INTO PARTECIPER(numT, emailCovoitureur)
+INSERT INTO participer (numT, emailCovoitureur)
 VALUES ("value", "value");
 
 --annuler une participation à un trajet
@@ -30,8 +30,8 @@ WHERE trajet.conducteur = inscrit.email AND
       AND date_dep > curdate()
       AND villeDepX = "value" AND villeDepY = "value"
       AND villeArrX = "value" AND villeArrY = "value"
-      AND date_dep < DATE_ADD("value", INTERVAL "valueTollerance" DAY) AND date_dep >= (MAX(DATE_SUB("value", INTERVAL "valueGap" DAY),curdate()))
+      AND date_dep < DATE_ADD( "value", INTERVAL 5 DAY) AND date_dep >= (maxDate (DATE_SUB("velue", INTERVAL 5 DAY),curdate()))
       AND trajet.nbPlaceDispo > (SELECT count(*)
-          FROM parteciper
-          WHERE parteciper.numT = trajet.numT)
+                                  FROM participer
+                                  WHERE participer.numT = trajet.numT)
 ORDER BY date_dep ASC;

@@ -1,3 +1,15 @@
+-- Procédure pour savoir si un trajet fait parti d'un trajet type
+CREATE FUNCTION maxDate
+(date1 DATE,date2 DATE)
+RETURNS DATE
+BEGIN
+IF (date1 > date2) THEN
+  RETURN date1;
+ELSE
+ RETURN date2;
+END IF;
+END//
+
 -- Si l'inscrit est bloqué RENVOYER VRAI
 CREATE FUNCTION isBlocked (varEmail VARCHAR(200))
 RETURNS TINYINT(1) UNSIGNED

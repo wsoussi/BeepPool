@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 create table inscrit
 (
     email VARCHAR(200),
