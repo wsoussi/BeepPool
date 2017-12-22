@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 -- modification d'un membre en admin
 CREATE PROCEDURE Promotion_Membre
 (IN adminMail VARCHAR(200), IN motDePass VARCHAR(26), IN emailPromotionReceiver VARCHAR(200))

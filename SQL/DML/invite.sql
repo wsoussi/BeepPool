@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 -- Chercher les trajets qui correspondent aux villes de depart et d’arrivee et une date precise ou une date approximative -> mettre la marge (afficher les trajets qui ne sont pas complets)
 SELECT inscrit.nom, vd.nom, va.nom, trajet.date_dep, trajet.date_ar, trajet.prix, calcul_distance(trajet.villeDepX, trajet.villeDepY, trajet.villeArrX, trajet.villeArrY)
 FROM trajet, inscrit, ville vd, ville va

@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 --ajouter une voiture
 insert into voiture (immatriculation, marque, modele, annee, couleur, nbPlaces, emailProprietaire)
 values ("value", "value", "value", "value", "value", "value", "value");

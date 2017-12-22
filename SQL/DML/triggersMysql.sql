@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 -- verifier que seulement un admin peut ajouter un trajet type
 CREATE TRIGGER VERIF_TRAJET_TYPE_INSERT BEFORE INSERT ON trajet_type
 FOR EACH ROW

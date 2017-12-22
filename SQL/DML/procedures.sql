@@ -1,3 +1,9 @@
+/*
+fichier createTablesMYSQL.sql
+Numero 21509841, Dautheribes, Jérémie
+Numero 21505680, Soussi, Wissem
+*/
+
 -- Procédure pour savoir si un trajet fait parti d'un trajet type
 CREATE FUNCTION maxDate
 (date1 DATE,date2 DATE)
