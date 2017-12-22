@@ -1,4 +1,4 @@
-conducteur-- verifier que seulement un admin peut ajouter un trajet type
+-- verifier que seulement un admin peut ajouter un trajet type
 CREATE TRIGGER VERIF_TRAJET_TYPE_INSERT BEFORE INSERT ON trajet_type
 FOR EACH ROW
 BEGIN
@@ -22,7 +22,7 @@ SELECT count(*) INTO Admin FROM inscrit WHERE NEW.email_admin = email AND estAdm
 END//
 
 
--- verifier que le conducteur ne s'inscrit pas sur son propre trajet comme passage're
+-- verifier que le conducteur ne s'inscrit pas sur son propre trajet comme passager
 CREATE TRIGGER VERIF_PARTICIPER_NODRIVER BEFORE INSERT ON participer
 FOR EACH ROW
 BEGIN
@@ -33,26 +33,26 @@ DECLARE leConducteur VARCHAR(200);
 SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AND NEW.numCovoitureur = conducteur;
    IF (estLeConducteur = 1) THEN
        SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par default.';
+           SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par defaut.';
    END IF;
--- verifier qu'un membre ne peut pas s'inscrire s'il est blocke' ou l'autre est blocke' ou il y a pas de place ou numTrajet n'existe pas
+-- verifier qu'un membre ne peut pas s'inscrire s'il est bloqué ou l'autre est bloqué ou il n'y a pas de place ou numTrajet n'existe pas
    SELECT conducteur INTO leConducteur FROM trajet WHERE trajet.numT = NEW.numT;
     SELECT count(*) INTO trajetExiste FROM trajet WHERE trajet.numT = NEW.numT;
       IF (isBlocked(NEW.numCovoitureur)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Vous etes blocke`, donc vous ne pouvez participer à aucun trajet.';
+              SET MESSAGE_TEXT = 'Vous etes bloqué, donc vous ne pouvez participer à aucun trajet.';
       ELSEIF (trajetExiste = 0) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Le trajet reference` n`est pas trouve`.';
+              SET MESSAGE_TEXT = 'Le trajet referencé n\'est pas trouvé.';
       ELSEIF (isBlocked(leConducteur)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Le conducteur de ce trajet est blocke`, sont trajet n`est plus valable.';
+              SET MESSAGE_TEXT = 'Le conducteur de ce trajet est bloqué, son trajet n\'est plus valable.';
       ELSEIF (NEW.iVD < NEW.iVM AND NEW.iVD <> NULL AND NEW.iVM <> NULL) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'La ville de descente que vous avez choisi viens avant la ville ou vous allez monter.';
+              SET MESSAGE_TEXT = 'La ville de descente que vous avez choisi est située avant la ville où vous allez monter.';
       ELSEIF (estPlein(NEW.numT, NEW.iVM, NEW.iVD)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Il y a pas de place dans ce trajet pour les villes de monte et de descente choisi.';
+              SET MESSAGE_TEXT = 'Il n\'y a pas de place dans ce trajet pour les villes de monté et de descente choisi.';
       END IF;
 END//
 
@@ -66,26 +66,26 @@ DECLARE leConducteur VARCHAR(200);
 SELECT count(*) INTO estLeConducteur FROM trajet WHERE NEW.numT = trajet.numT AND NEW.numCovoitureur = conducteur;
    IF (estLeConducteur = 1) THEN
        SIGNAL SQLSTATE '45000'
-           SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par default.';
+           SET MESSAGE_TEXT = 'Vous etes le conducteur de ce trajet donc vous participez dejà par defaut.';
    END IF;
 -- verifier qu'un membre ne peut pas s'inscrire s'il est blocke' ou l'autre est blocke' ou il y a pas de place ou numTrajet n'existe pas
    SELECT conducteur INTO leConducteur FROM trajet WHERE trajet.numT = NEW.numT;
     SELECT count(*) INTO trajetExiste FROM trajet WHERE trajet.numT = NEW.numT;
       IF (isBlocked(NEW.numCovoitureur)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Vous etes blocke`, donc vous ne pouvez participer à aucun trajet.';
+              SET MESSAGE_TEXT = 'Vous etes bloqué, donc vous ne pouvez participer à aucun trajet.';
       ELSEIF (trajetExiste = 0) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Le trajet reference` n`est pas trouve`.';
+              SET MESSAGE_TEXT = 'Le trajet referencé n\'est pas trouvé.';
       ELSEIF (isBlocked(leConducteur)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Le conducteur de ce trajet est blocke`, sont trajet n`est plus valable.';
+              SET MESSAGE_TEXT = 'Le conducteur de ce trajet est bloqué, son trajet n\'est plus valable.';
       ELSEIF (NEW.iVD < NEW.iVM AND NEW.iVD <> NULL AND NEW.iVM <> NULL) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'La ville de descente que vous avez choisi viens avant la ville ou vous allez monter.';
+              SET MESSAGE_TEXT = 'La ville de descente que vous avez choisi est située avant la ville où vous allez monter.';
       ELSEIF (estPlein(NEW.numT, NEW.iVM, NEW.iVD)) THEN
           SIGNAL SQLSTATE '45000'
-              SET MESSAGE_TEXT = 'Il y a pas de place dans ce trajet pour les villes de monte et de descente choisi.';
+              SET MESSAGE_TEXT = 'Il n\'y a pas de place dans ce trajet pour les villes de monté et de descente choisies.';
       END IF;
 END//
 
@@ -104,7 +104,7 @@ SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.vi
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
-  SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
+  SET MESSAGE_TEXT = 'Operation interdite! Vous etes bloqué!';
 END IF;
 
 SELECT count(*) INTO conducteurNbVoitures FROM voiture WHERE NEW.conducteur = emailProprietaire;
@@ -118,7 +118,7 @@ END IF;
 
    IF (conducteurNbVoitures = 0) THEN
        SIGNAL SQLSTATE '45000'
-         SET MESSAGE_TEXT = 'Le conducteur n`a pas de voitures dans la base de donnees, donc il peut pas creer un trajet.';
+         SET MESSAGE_TEXT = 'Le conducteur n\'a pas de voiture, donc il ne peut pas creer un trajet.';
    ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
@@ -130,7 +130,7 @@ END IF;
            SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
    ELSEIF (voitureALui = 0) THEN
        SIGNAL SQLSTATE '45000'
-         SET MESSAGE_TEXT = 'La voiture n`est pas celle du conducteur donc le ntrajet n`est pas cree`';
+         SET MESSAGE_TEXT = 'La voiture n\'est pas celle du conducteur donc le trajet n\'est pas cree`';
    ELSEIF (trajet_Type <> -1) THEN
          IF (calcul_prix_par_km(distance,NEW.prix) > prix_TT) THEN
             SIGNAL SQLSTATE '45000'
@@ -158,7 +158,7 @@ SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.vi
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
-  SET MESSAGE_TEXT = 'Operation interdite! Vous etes blocke`!';
+  SET MESSAGE_TEXT = 'Operation interdite! Vous etes bloqué!';
 END IF;
 
 SELECT count(*) INTO conducteurNbVoitures FROM voiture WHERE NEW.conducteur = emailProprietaire;
@@ -172,7 +172,7 @@ END IF;
 
    IF (conducteurNbVoitures = 0) THEN
        SIGNAL SQLSTATE '45000'
-         SET MESSAGE_TEXT = 'Le conducteur n`a pas de voitures dans la base de donnees, donc il peut pas creer un trajet.';
+         SET MESSAGE_TEXT = 'Le conducteur n\'a pas de voiture, donc il ne peut pas creer un trajet.';
    ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
@@ -184,7 +184,7 @@ END IF;
            SET MESSAGE_TEXT = 'Valeur invalide pour nbPlaceDispo de trajet';
    ELSEIF (voitureALui = 0) THEN
        SIGNAL SQLSTATE '45000'
-         SET MESSAGE_TEXT = 'La voiture n`est pas celle du conducteur donc le ntrajet n`est pas cree`';
+         SET MESSAGE_TEXT = 'La voiture n\'est pas celle du conducteur donc le trajet n\'est pas cree`';
    ELSEIF (trajet_Type <> -1) THEN
          IF (calcul_prix_par_km(distance,NEW.prix) > prix_TT) THEN
             SIGNAL SQLSTATE '45000'
@@ -219,7 +219,7 @@ SELECT date_ar INTO dateTrajet FROM trajet WHERE trajet.numT = NEW.numT;
 
 IF (dateTrajet > CURDATE()) THEN
     SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement apres que le trajet est conclu';
+    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement après la fin du trajet';
 ELSEIF (NEW.numDonneur = NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
@@ -228,7 +228,7 @@ ELSEIF (estCovoitureurD AND numConducteur <> NEW.numReceveur) THEN
     SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
 ELSEIF (estConducteur = true AND estCovoitureurR = false) THEN
     SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'Vous êtes le conducteur, vous pouvez donner un avis seulement aux covoitureurs du trajet selectionne`';
+    SET MESSAGE_TEXT = 'Vous êtes le conducteur, vous pouvez donner un avis seulement aux covoitureurs du trajet selectionné';
 END IF;
 END//
 
@@ -249,7 +249,7 @@ SELECT date_ar INTO dateTrajet FROM trajet WHERE trajet.numT = NEW.numT;
 
 IF (dateTrajet > CURDATE()) THEN
     SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement apres que le trajet est conclu';
+    SET MESSAGE_TEXT = 'Vous pouvez donner un avis seulement après la fin du trajet';
 ELSEIF (NEW.numDonneur = NEW.numReceveur) THEN
     SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'Vous ne pouvez pas vous donner un avis à vous même';
@@ -258,6 +258,6 @@ ELSEIF (estCovoitureurD AND numConducteur <> NEW.numReceveur) THEN
     SET MESSAGE_TEXT = 'Vous êtes covoitureur, vous ne pouvez donner un avis qu\'au conducteur';
 ELSEIF (estConducteur = true AND estCovoitureurR = false) THEN
     SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'Vous êtes le conducteur, pouvez donner un avis seulement aux covoitureurs du trajet selectionne`';
+    SET MESSAGE_TEXT = 'Vous êtes le conducteur, pouvez donner un avis seulement aux covoitureurs du trajet selectionné';
 END IF;
 END//

@@ -12,14 +12,14 @@ insert into trajet
 INSERT INTO PARTECIPER(numT, emailCovoitureur)
 VALUES ("value", "value");
 
---annuler une participation a un trajet
+--annuler une participation à un trajet
 DELETE FROM participer WHERE numT = "value" emailCovoitureur = "value";
 
 -- donner un avis
 INSERT INTO AVIS(numT, numDonneur, numReceveur, nbEtoile, commentaire)
 VALUES ( "value", "value", "value", "value", "value");
 
--- afficher tout les trajets avec places disponibles par date croissante (dateDep > curdate())
+-- afficher tous les trajets avec les places disponibles par date croissante (dateDep > curdate())
 SELECT *, calcul_distance(trajet.villeDepX, trajet.villeDepY, trajet.villeArrX, trajet.villeArrY)
 FROM trajet, inscrit, ville vd, ville va
 WHERE trajet.conducteur = inscrit.email AND

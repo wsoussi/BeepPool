@@ -1,4 +1,4 @@
--- Chercher les trajets qui correspond aux villes de depart et d’arrivee et une date precis ou une date de marge -> mettre le marge (afficher les trajets qui ne sont pas complets)
+-- Chercher les trajets qui correspondent aux villes de depart et d’arrivee et une date precise ou une date approximative -> mettre la marge (afficher les trajets qui ne sont pas complets)
 SELECT inscrit.nom, vd.nom, va.nom, trajet.date_dep, trajet.date_ar, trajet.prix, calcul_distance(trajet.villeDepX, trajet.villeDepY, trajet.villeArrX, trajet.villeArrY)
 FROM trajet, inscrit, ville vd, ville va
 WHERE trajet.conducteur = inscrit.email AND
@@ -15,7 +15,7 @@ WHERE trajet.conducteur = inscrit.email AND
           WHERE parteciper.numT = trajet.numT)
 ORDER BY date_dep ASC;
 
--- S'inscrir sur le site et devenir membre
+-- S'inscrire sur le site et devenir membre
 INSERT INTO inscrit
 (email, nom, prenom, dateNaiss, adresse, codeP, pays, numTel, mdp)
 VALUES

@@ -1,4 +1,4 @@
--- Si l'inscrit est blocke' RENVOYER VRAI
+-- Si l'inscrit est bloqué RENVOYER VRAI
 CREATE FUNCTION isBlocked (varEmail VARCHAR(200))
 RETURNS TINYINT(1) UNSIGNED
 BEGIN
@@ -79,7 +79,7 @@ RETURN resultat;
 END//
 
 
--- Procédure pour calculer la distance entre deux ville
+-- Procédure pour calculer la distance entre deux villes
 CREATE PROCEDURE calcul_distance
 (IN depX DECIMAL(9,6),IN depY DECIMAL(9,6), IN arrX DECIMAL(9,6), IN arrY DECIMAL(9,6), OUT resultat DECIMAL(6,2))
 BEGIN
@@ -97,8 +97,7 @@ SET resultat = R * ACOS( SIN(latA) * SIN(latB) +
 COS(latA) * COS(latB) * COS(lonA - lonB));
 END//
 
--- Fonction pour calculer la distance entre deux ville
-CREATE FUNCTION calcul_distance
+-- Fonction pour calculer la distance entre deux villes
 (depX DECIMAL(9,6),depY DECIMAL(9,6),arrX DECIMAL(9,6), arrY DECIMAL(9,6))
 RETURNS DECIMAL(6,2)
 BEGIN
@@ -139,7 +138,7 @@ SET minutes = (distance/90*100 - hours*100)/10*6;
     SET resultat = hours*10000 + minutes*100;
 END//
 
---vérifie s'il y a des places disponibles par rapport aux viles etapes
+--vérifie s'il y a des places disponibles par rapport aux villes étapes
 CREATE FUNCTION estPlein
 (numT INTEGER, iVM INT, iVD INT)
 RETURNS TINYINT(1) UNSIGNED
@@ -148,7 +147,7 @@ DECLARE k INT DEFAULT 0;
 DECLARE placesOcc INT;
 DECLARE placesTOT INT;
 DECLARE nbVillesEtapes INT;
--- nombre de place occupe' des le depart
+-- nombre de place occupée dès le départ
 SELECT count(*) INTO placesOcc FROM participer WHERE participer.numT = numT AND participer.iVM = NULL;
 SELECT trajet.nbPlaceDispo INTO placesTOT FROM trajet WHERE trajets.numT = numT;
 SELECT count(*) INTO nbVillesEtapes FROM etapes WHERE etapes.numT = numT;
@@ -164,7 +163,7 @@ IF (nbVillesEtapes > 0 AND iVM <> NULL) THEN
       LEAVE arriverAiVM;
     END LOOP arriverAiVM;
 END IF;
--- sortir si placesOcc = nbPlaceDispo ou j'ai parcouru tous les etapes
+-- sortir si placesOcc = nbPlaceDispo, sinonj'ai parcouru toutes les etapes
 IF (iVD = NULL) THEN
     SET iVD = nbVillesEtapes;
 END IF;

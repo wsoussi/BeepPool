@@ -9,7 +9,7 @@ IF (Admin = 1) THEN
 END IF;
 END//
 
--- Blockage/Deblockage d'un inscrit avec une date de fin blockage
+-- Blocage/Deblocage d'un inscrit avec une date de fin blocage
 CREATE PROCEDURE Blockage_Membre
 (IN adminMail VARCHAR(200),IN motDePass VARCHAR(26), IN emailBloque VARCHAR(200), dateFinBlockageP DATE)
 BEGIN

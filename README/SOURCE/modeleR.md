@@ -1,7 +1,7 @@
 <h3>MODÈLE RELATIONNEL DE LA BDD</h3>
 
 **INSCRIT**
-(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp , estAdmin , dateFinBlockage )
+(<u>email</u> , nom , prenom , dateNaiss , adresse , codePostale , pays , numTel , mdp , estAdmin , dateFinBlocage )
 
 **VOITURE** (<u>immatriculation</u> , marque , modele , annee , couleur , nbPlaces , _emailProprietaire_ )
 
@@ -17,9 +17,9 @@
 **ETAPES**
 ( <u>_numT_</u> , <u>_coordX_</u> , <u>_coordY_</u> , ordre )
 
-**PARTECIPER**
+**PARTICIPER**
 ( <u>_numT_</u> , <u>_emailCovoitureur_</u> , iVM , iVD )
 
 
 **AVIS**
-( <u>_numT_</u> , <u>_numDonneur_</u> , <u>_numRéceveur_</u>, nbEtoile, commentaire )
+( <u>_numT_</u> , <u>_numDonneur_</u> , <u>_numReceveur_</u>, nbEtoile, commentaire )

@@ -1,16 +1,13 @@
 create table inscrit
 (
     email VARCHAR(200),
-        -- 64 characters for the "local part" (username).
-        -- 1 character for the @ symbol.
-        -- 255 characters for the domain name.
     nom VARCHAR(30) not null,
     prenom VARCHAR(30) not null,
     dateNaiss DATE not null CHECK (dateNaiss < CURDATE() and dateNaiss > DATE_SUB(CURDATE(), INTERVAL 120 YEAR)),
     rang NUMERIC(2,1) CHECK (rang <= 5 AND rang >= 0),
     adresse VARCHAR(70),
     codePostale VARCHAR(9),
-        -- la longueur change de pays à pays (par example USA a 9 chiffres)
+        -- la longueur change de pays à pays (par example USA  9 chiffres)
     pays VARCHAR(50),
     numTel VARCHAR(13) not null,
     mdp VARCHAR(26)not null,
@@ -22,7 +19,7 @@ create table inscrit
 create table voiture
 (
   immatriculation VARCHAR(8),
-      -- une immatriculation a une longueur variable par rapport au pays et date d'immatriculation
+      -- une immatriculation a une longueur variable par rapport au pays et à la date d'immatriculation
   marque VARCHAR(35) not null,
   modele VARCHAR(35) not null,
   annee INTEGER  CHECK (annee >= 1883 and annee <= year(CAST(CURRENT_TIMESTAMP AS DATE))),
@@ -120,7 +117,7 @@ create table avis
     foreign key participer_numReceveur_FK (numReceveur) references inscrit(email)
   );
 
--- LES CHECKS NE MARCHES PAS EN MYSQL DONC ON A ECRIT LES TRIGGERS CORRESPONDANT
+-- LES CHECKS NE MARCHENT PAS EN MYSQL DONC ON A ECRIT LES TRIGGERS CORRESPONDANT
 
 CREATE TRIGGER VERIF_INSCRIT BEFORE INSERT ON inscrit
 FOR EACH ROW

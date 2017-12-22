@@ -1,4 +1,4 @@
--- Exemple de création de villes
+-- Exemple de création de ville
 INSERT INTO ville(coordX,coordY,nom,pays,region)
 VALUES (3.8772300,43.6109200, 'Montpellier', 'France', 'Occitanie');
 
@@ -27,12 +27,12 @@ VALUES
 
 
 -- REQUETTES ADMIN
--- wissem rend jeremie un admin
+-- wissem rend jeremie  admin
 CALL Promotion_Membre('wissem.soussi@etu.umontpellier.fr','wissem','jeremie.daughter@montp.fr');
--- Blockage/Deblockage d'un inscrit avec une date de fin blockage
+-- Blocage/Deblocage d'un inscrit avec une date de fin blocage
 CALL Blockage_Membre('wissem.soussi@etu.umontpellier.fr','wissem', 'lazar.angelov@dope.fr', '2018-02-18');
 
--- AJOUT VOITURES
+-- AJOUT VOITURE
 insert into voiture (immatriculation, marque, modele, annee, couleur, nbPlaces, emailProprietaire)
 values ('wiz96','Tesla', 'Roadster', 2017, 'rouge', 4, 'wissem.soussi@etu.umontpellier.fr');
 
@@ -47,7 +47,7 @@ insert into trajet
     VALUES
     (20, '2017-12-19', '2017-12-19', 'fac des sciences', 'theatre de Cannes', 'wissem.soussi@etu.umontpellier.fr', 'wiz96', 3, 3.877230, 43.610920, 7.017369, 43.552847);
 
---partecipation au trajet
+--participation au trajet
 insert into participer
   (numT, numCovoitureur)
   values
