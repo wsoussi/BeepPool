@@ -160,9 +160,7 @@ Un membre peut participer à un trajet, en insérant les villes ou il va monter 
 La participation est ajoutée seulement s’ il  y a de la place disponible pour ce sous-trajet du trajet choisi. C’est-à-dire que si pour ce bout de trajet (de iVM à IVD) il y a une etape ou il y a pas de place disponible la participation peut pas être ajoutée. De même le membre et le conducteur du trajet ne doivent pas être bloquée au moment de la souscription au trajet, et enfin l’ordre de la ville de monte doit être bien sûr inférieur à l’ordre de la ville descente (or on ne peut pas descendre dans une ville qui a ete deja parcouru avant la ville d’embarcation) (fichier “triggersMysql.sql” -> `TRIGGER VERIF_PARTICIPER_NODRIVER`).
 
 
-Un membre peut donner un avis ....(table avis)
-
-conditions avis....(trigger avis et procedures(fonctions) liees )
+Un membre peut donner un avis avec un système d’étoile (comme décrit plus haut). Le nombre d’étoile est obligatoire, mais l’utilisateur peut rajouter s’il le souhaite un commentaire écrit. Un avis est associé au minimum à un numéro de trajet, à l’identifiant du donneur de l’avis, à l’identifiant du receveur de l’avis et donc au nombre d’étoile. Avant l’insertion d’un avis, plusieurs conditions doivent être respectées. En premier lieu, l’avis ne peut pas être posté avant la fin du trajet. Le donneur de l’avis ne peut pas se donner un avis à lui-même. Si le donneur de l’avis est un covoitureur, alors il ne peut donner son avis qu’au conducteur. Enfin, s’il est conducteur, il peut donner un avis à chaque autre covoitureur présent lors du trajet.
 <br>
 <br>
 
