@@ -134,25 +134,31 @@ Un admin peut aussi bannir un membre en définissant une date où le bannissemen
 
 Un admin peut aussi enregistrer dans la base de données des villes (fichier “admin.sql”) en mettant leur nom, pays et région relative et identifiées par les coordonnées GPS (longitude et latitude) (fichier “createTablesMYSQL.sql” -> `TABLE ville`).
 
-Enfin l’admin peut créer des trajets types identifiés par une ville de départ, une ville de retour, et avec un prix par kilomètre maximal, c'est à dire que les membres ne pourront pas proposer ce trajet avec un prix par kilomètre supérieur à celui renseigné dans la table (fichier “createTablesMYSQL.sql” -> `TABLE trajet_type`). Le trajet type est referencé par l’admin qui l’a créé (fichier “triggersMysql.sql” -> `TRIGGER VERIF_TRAJET_TYPE_INSERT`).
+Enfin l’admin peut créer des trajets types identifiés par une ville de départ, une ville de retour, et avec un prix par kilomètre maximal, c'est à dire que les membres ne pourront pas proposer ce trajet avec un prix par kilomètre supérieur à celui renseigné dans la table (fichier “createTablesMYSQL.sql” -> `TABLE trajet_type`). Le trajet type est référencé par l’admin qui l’a créé (fichier “triggersMysql.sql” -> `TRIGGER VERIF_TRAJET_TYPE_INSERT`).
 
 Un membre peut enregistrer dans la base de données une voiture qu’il utilise pour le covoiturage; la voiture sera identifiée par l’immatriculation, et devra obligatoirement avoir une marque, un modèle, un nombre de places et l’email du propriétaire qui doit être un membre du site (fichier “createTablesMYSQL.sql” -> `TABLE voiture`).
 La date d’immatriculation, si spécifiée, doit être inférieure à la date d’aujourd’hui et supérieure au 1883 (premières voitures commercialisées) et le nombre de places se situe entre 0 et 9 (si supérieur à 9 on parle de mini-bus et non plus de voiture) (fichier “createTablesMYSQL.sql” -> `TRIGGER VERIF_VOITURE`).
 
 <br>
 <br>
+<b>À FAIRE : RAJOUTER L'INSERTION AUTOMATIQUE DE L'HEURE D'ARRIVÉE AUTOMATIQUEMENT (mettre à jour en conséquences)</b>
 
-Un membre propose un trajet ....(table trajet)
+Un membre peut proposer un trajet. Pour cela il doit insérer obligatoirement son identifiant (email), sa voiture utilisée, le nombre de place qu'il souhaite autoriser, les heures de départ et d'arrivée, les villes de départ et d'arrivée ainsi que leur adresse. Avant l'insertion du trajet dans la base, de nombreuses conditions seront vérifiées (fichier "triggersMysql.sql" -> `TRIGGER VERIF_TRAJET`). </br>
+Tout d'abord, si le membre est bloqué, il ne pourra pas créer de trajet. Si le trajet proposé correspond à un trajet type, alors le trajet sera référencé par ce trajet type (et le prix sera vérifié pour qu'il soit inférieur ou égal à celui du trajet type). Sinon nous vérifions, grâce à une procédure, que le prix au km est inférieur ou égal à 0,10€/km (limite arbitraire qui nous parait assez réaliste). La distance du trajet est calculée automatiquement par une procédure à partir de la longitude et la latitude des villes d'arrivée et de départ, en prenant un trajet en ligne droite et en prenant en compte la rondité de la terre. </br>
+Nous vérifions également que le membre possède une voiture, si non, il devra en ajouter une. La voiture sélectionnée doit être celle du conducteur ; cela n'aurait pas trop d'intérêt si nous avions l'interface web, mais dans le contexte de la BDD nous avons préféré le rajouter. Le nombre de place proposé doit être supérieur à 0 et inférieur aux capacités de la voiture (le conducteur prenant forcément une place).
+Nous vérifions aussi la date départ, qu'elle soit bien supérieure à la date courante, et qu'elle se situe dans, au maximum, les six prochains mois à venir. Enfin, pour la date d'arrivée, nous vérifions qu'elle se situe bien après la date de départ.
 
-conditions trajets....(trigger trajet et procedures(fonctions) liees )
+
 <br>
 <br>
 
-Un membre participe à un trajet ....(table participer)
+Un trajet peut avoir plusieur villes étapes entre la ville de départ et la ville d'arrivée (fichier “createTablesMYSQL.sql” -> `TABLE etapes`).
+Ces villes étapes sont caractérisées par l’ordre de parcours dans le trajet.
 
-conditions participer....(trigger participer et procedures(fonctions) liees )
-<br>
-<br>
+Un membre peut participer à un trajet, en insérant les villes ou il va monter et descendre entre les villes disponibles dans le trajet: ville de départ, villes étapes, ville d'arrivée (fichier “createTablesMYSQL.sql” -> `TABLE participer`). Si la ville “d’embarcation” (iVM) est la ville de départ alors sa valeur est NULL, viceversa iVD est NULL si la ville de descente est la ville d'arrivée: ce qui fait que personne peut descendre dans la ville de départ et personne va monter dans la ville d'arrivée (logique et convenable). Autrement iVM et iVD vont contenir l’ordre de la ville respectif dans ce trajet (l’attribut ordre dans la table `etapes`).
+
+La participation est ajoutée seulement s’ il  y a de la place disponible pour ce sous-trajet du trajet choisi. C’est-à-dire que si pour ce bout de trajet (de iVM à IVD) il y a une etape ou il y a pas de place disponible la participation peut pas être ajoutée. De même le membre et le conducteur du trajet ne doivent pas être bloquée au moment de la souscription au trajet, et enfin l’ordre de la ville de monte doit être bien sûr inférieur à l’ordre de la ville descente (or on ne peut pas descendre dans une ville qui a ete deja parcouru avant la ville d’embarcation) (fichier “triggersMysql.sql” -> `TRIGGER VERIF_PARTICIPER_NODRIVER`).
+
 
 Un membre peut donner un avis ....(table avis)
 
