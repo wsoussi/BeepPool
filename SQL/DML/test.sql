@@ -38,9 +38,9 @@ values ('wiz96','Tesla', 'Roadster', 2017, 'rouge', 4, 'wissem.soussi@etu.umontp
 
 --creer trajet
 insert into trajet
-  (prix, date_dep, date_ar, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)
+  (prix, date_dep, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)
   VALUES
-  (20, '2017-12-23', '2017-12-23', 'fac des sciences', 'theatre de Cannes', 'wissem.soussi@etu.umontpellier.fr', 'wiz96', 3, 3.877230, 43.610920, 7.017369, 43.552847);
+  (1, '2017-12-23', 'fac des sciences', 'theatre de Cannes', 'wissem.soussi@etu.umontpellier.fr', 'wiz96', 3, 3.877230, 43.610920, 7.017369, 43.552847);
 
   insert into trajet
     (prix, date_dep, date_ar, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)

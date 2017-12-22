@@ -4,9 +4,9 @@ values ("value", "value", "value", "value", "value", "value", "value");
 
 -- proposer un trajet
 insert into trajet
-  (prix, date_dep, date_ar, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)
+  (prix, date_dep, adr_rdv, adr_ar, conducteur, vehiculeImm, nbPlaceDispo, villeDepX, villeDepY, villeArrX, villeArrY)
   VALUES
-  ("value", "value", "value", "value", "value", "value", "value", "value", "value", "value", "value", "value");
+  ("value", "value", "value", "value", "value", "value", "value", "value", "value", "value", "value");
 
 -- participer à un trajet
 INSERT INTO PARTECIPER(numT, emailCovoitureur)

@@ -100,8 +100,12 @@ DECLARE voitureALui BOOLEAN;
 DECLARE distance DECIMAL(6,2);
 DECLARE trajet_Type INTEGER;
 DECLARE prix_TT DECIMAL(6,2);
+DECLARE tempsTrajet TIME;
 SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
+CALL calcul_temps_par_trajet(distance, tempsTrajet);
+SET NEW.date_ar = ADDTIME(NEW.date_dep, tempsTrajet);
+
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
   SET MESSAGE_TEXT = 'Operation interdite! Vous etes bloqué!';
@@ -119,7 +123,7 @@ END IF;
    IF (conducteurNbVoitures = 0) THEN
        SIGNAL SQLSTATE '45000'
          SET MESSAGE_TEXT = 'Le conducteur n\'a pas de voiture, donc il ne peut pas creer un trajet.';
-   ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
+   ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATETIME) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATETIME), INTERVAL 6 MONTH)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
    ELSEIF (NEW.date_ar < NEW.date_dep) THEN
@@ -149,13 +153,17 @@ END//
 CREATE TRIGGER VERIF_TRAJET_UPDATE BEFORE UPDATE ON trajet
 FOR EACH ROW
 BEGIN
-DECLARE conducteurNbVoitures TINYINT;
 DECLARE voitureALui BOOLEAN;
-DECLARE distance DECIMAL(6,2) = calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.arrX, NEW.arrY);
-DECLARE trajet_Type INTEGER = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
+DECLARE conducteurNbVoitures TINYINT;
+DECLARE distance DECIMAL(6,2);
+DECLARE trajet_Type INTEGER;
 DECLARE prix_TT DECIMAL(6,2);
+DECLARE tempsTrajet TIME;
 SET trajet_Type = trajetType(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY);
 CALL calcul_distance(NEW.villeDepX, NEW.villeDepY, NEW.villeArrX, NEW.villeArrY,distance);
+CALL calcul_temps_par_trajet(distance, tempsTrajet);
+SET NEW.date_ar = ADDTIME(NEW.date_dep, tempsTrajet);
+
 IF (isBlocked(NEW.conducteur)) THEN
   SIGNAL SQLSTATE '45000'
   SET MESSAGE_TEXT = 'Operation interdite! Vous etes bloqué!';
@@ -173,7 +181,7 @@ END IF;
    IF (conducteurNbVoitures = 0) THEN
        SIGNAL SQLSTATE '45000'
          SET MESSAGE_TEXT = 'Le conducteur n\'a pas de voiture, donc il ne peut pas creer un trajet.';
-   ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATE) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)) THEN
+   ELSEIF (NEW.date_dep < CAST(CURRENT_TIMESTAMP AS DATETIME) OR NEW.date_dep > DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATETIME), INTERVAL 6 MONTH)) THEN
           SIGNAL SQLSTATE '45000'
            SET MESSAGE_TEXT = 'Valeur invalide pour date_dep de trajet';
    ELSEIF (NEW.date_ar < NEW.date_dep) THEN
@@ -193,7 +201,7 @@ END IF;
             SET NEW.numTrajetType = trajet_Type;
         END IF;
    ELSEIF (trajet_Type = -1) THEN
-        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 )
+        IF (calcul_prix_par_km(distance,NEW.prix) > 0.10 ) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Prix par km trop élevé, le prix par km doit être <= à 0.10€.';
         END IF;

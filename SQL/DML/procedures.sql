@@ -97,26 +97,6 @@ SET resultat = R * ACOS( SIN(latA) * SIN(latB) +
 COS(latA) * COS(latB) * COS(lonA - lonB));
 END//
 
--- Fonction pour calculer la distance entre deux villes
-(depX DECIMAL(9,6),depY DECIMAL(9,6),arrX DECIMAL(9,6), arrY DECIMAL(9,6))
-RETURNS DECIMAL(6,2)
-BEGIN
-DECLARE resultat DECIMAL(6,2);
-DECLARE R DECIMAL(13,9);
-DECLARE latA DECIMAL(13,9);
-DECLARE latB DECIMAL(13,9);
-DECLARE lonA DECIMAL(13,9);
-DECLARE lonB DECIMAL(13,9);
-SET R = 6372.795477598;
-SET latA = depY/180*PI();
-SET latB = arrY/180*PI();
-SET lonA = depX/180*PI();
-SET lonB = arrX/180*PI();
-SET resultat = R * ACOS( SIN(latA) * SIN(latB) +
-COS(latA) * COS(latB) * COS(lonA - lonB));
-RETURN resultat;
-END//
-
 -- Procédure calcul prix au kilomètre
 CREATE FUNCTION calcul_prix_par_km
 (distance DECIMAL(6,2), prix DECIMAL(5,2))

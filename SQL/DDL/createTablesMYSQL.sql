@@ -62,8 +62,8 @@ create table trajet
   (
     numT INTEGER auto_increment,
     prix DECIMAL(4,2) not null,
-    date_dep DATE not null CHECK (date_dep >= CAST(CURRENT_TIMESTAMP AS DATE) and date_dep <= DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATE), INTERVAL 6 MONTH)),
-    date_ar DATE not null CHECK (date_ar >= date_dep),
+    date_dep DATETIME not null CHECK (date_dep >= CAST(CURRENT_TIMESTAMP AS DATETIME) and date_dep <= DATE_ADD(CAST(CURRENT_TIMESTAMP AS DATETIME), INTERVAL 6 MONTH)),
+    date_ar DATETIME not null CHECK (date_ar >= date_dep),
     adr_rdv VARCHAR(70) not null,
     adr_ar VARCHAR(70) not null,
     conducteur VARCHAR(200) not null,
